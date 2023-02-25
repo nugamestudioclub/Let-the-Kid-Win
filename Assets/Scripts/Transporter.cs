@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class Transporter : MonoBehaviour
@@ -16,7 +17,7 @@ public class Transporter : MonoBehaviour
     private List<Transform> points = new();
     public List<Transform> Points => points;
 
-    //public List<float> 
+    private List<float> distanceBetweenPoints = new();
 
     [SerializeField]
     private float gizmoPointSize = 0.25f;
@@ -27,7 +28,7 @@ public class Transporter : MonoBehaviour
 
     private void Awake()
     {
-        
+        CalculateDistanceBetweenPoints();
     }
 
     private void OnDrawGizmosSelected()
@@ -38,21 +39,19 @@ public class Transporter : MonoBehaviour
             Gizmos.DrawWireSphere(point.position, gizmoPointSize);
         }
     }
-
-    public float DistanceToNextPoint(int index)
+    private void CalculateDistanceBetweenPoints()
     {
-
-    }
-    public float TotalLength()
-    {
-        float currentTotal = 0;
-        List<Vector2> pointPositions = points.Select(p => (Vector2) p.position).ToList();
+        List<Vector2> pointPositions = points.Select(p => (Vector2)p.position).ToList();
         for (int i = 0; i < pointPositions.Count - 1; i++)
         {
-            currentTotal += Vector2.Distance(pointPositions[i], pointPositions[i+1]);
+            distanceBetweenPoints.Add(Vector2.Distance(pointPositions[i], pointPositions[i + 1]));
         }
-        return currentTotal;
     }
+    public float DistanceToNextPoint(int index)
+    {
+        return distanceBetweenPoints[index];
+    }
+    public float TotalLength => distanceBetweenPoints.Sum();
 
 
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Board : MonoBehaviour
 {
@@ -80,17 +81,22 @@ public class Board : MonoBehaviour
 
     private IEnumerator NextSpace(int playerID)
     {
-        //lerp between positions
-        float moveStep = moveTime / moveSteps;
         var currentSpace = spaces[playerPositions[playerID]].position;
         var nextSpace = spaces[playerPositions[playerID] + 1].position;
+
+        yield return MovePieceBetweenPoints(playerID, currentSpace, nextSpace, moveTime);
+        playerPositions[playerID]++; 
+    }
+
+    private IEnumerator MovePieceBetweenPoints(int playerID, Vector2 startPoint, Vector2 endPoint, float moveTime)
+    {
+        float moveStep = moveTime / moveSteps;
         for (float i = 0; i < (moveTime + moveStep); i += moveStep)
         {
             //take current position and 
-            gamePieces[playerID].transform.position = Vector2.Lerp(currentSpace, nextSpace, i/moveTime);
+            gamePieces[playerID].transform.position = Vector2.Lerp(startPoint, endPoint, i / moveTime);
             yield return new WaitForSeconds(moveStep);
         }
-        playerPositions[playerID]++; 
     }
 
     private void FinishMoving(int playerID, int space)
@@ -102,25 +108,32 @@ public class Board : MonoBehaviour
         if (ladderIndex != -1)
         {
             var ladder = ladders[ladderIndex];
-            StartCoroutine(MoveThroughPoints(
-                playerID, 
-                ladder.Points, 
-                ladder.TotalLength(), 
-                ladder.TransportTime));
+            Debug.Log($"Player {playerID} is taking a ladder from {ladder.StartIndex} to {ladder.EndIndex}!");
+            StartCoroutine(MoveThroughTransporter(
+                playerID,
+                ladder));
         }
         else if (snakeIndex != -1)
         {
             var snake = snakes[snakeIndex];
-            StartCoroutine(MoveThroughPoints(
-                playerID, 
-                snake.Points, 
-                snake.TotalLength(), 
-                snake.TransportTime));
+            Debug.Log($"Player {playerID} is taking a snake from {snake.StartIndex} to {snake.EndIndex}!");
+            StartCoroutine(MoveThroughTransporter(
+                playerID,
+                snake));
         }
     }
 
-    private IEnumerator MoveThroughPoints(int playerID, List<Transform> points, float totalDistance, float time)
+    private IEnumerator MoveThroughTransporter(int playerID, Transporter transporter)
     {
+        for (int i = 0; i < transporter.Points.Count -1; i++) {
+            float distanceToTravel = transporter.DistanceToNextPoint(i);
+            float timeToMove = (distanceToTravel / transporter.TotalLength) * transporter.TransportTime;
+            yield return MovePieceBetweenPoints(
+                playerID, 
+                transporter.Points[i].position, 
+                transporter.Points[i + 1].position, 
+                timeToMove);
+        }
         yield return null;
     }
 
