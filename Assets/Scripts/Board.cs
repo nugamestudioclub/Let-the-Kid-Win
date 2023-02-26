@@ -61,7 +61,6 @@ public class Board : MonoBehaviour
         {
             //run movement coroutine
             StartCoroutine(GoMovePlayer(playerID, spaces));
-            FinishMoving(playerID, playerPositions[playerID]);
         } 
         else
         {
@@ -74,8 +73,8 @@ public class Board : MonoBehaviour
         for (int i = 0; i < spaces; i++)
         {
             yield return StartCoroutine(NextSpace(playerID));
-            //yield return new WaitForSeconds(moveTime);
         }
+        FinishMoving(playerID, playerPositions[playerID]);
         yield return null;
     }
 
@@ -125,6 +124,8 @@ public class Board : MonoBehaviour
 
     private IEnumerator MoveThroughTransporter(int playerID, Transporter transporter)
     {
+        Debug.Log($"Transporter length: {transporter.Points.Count}");
+        
         for (int i = 0; i < transporter.Points.Count -1; i++) {
             float distanceToTravel = transporter.DistanceToNextPoint(i);
             float timeToMove = (distanceToTravel / transporter.TotalLength) * transporter.TransportTime;
@@ -134,6 +135,7 @@ public class Board : MonoBehaviour
                 transporter.Points[i + 1].position, 
                 timeToMove);
         }
+        playerPositions[playerID] = transporter.EndIndex;
         yield return null;
     }
 
