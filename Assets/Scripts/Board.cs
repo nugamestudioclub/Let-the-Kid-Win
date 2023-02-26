@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
@@ -170,13 +171,23 @@ public class Board : MonoBehaviour {
 	private void OnDrawGizmos() {
 		int index = 0;
 		foreach( var cell in GetCells() )
-			DrawSpace(grid.CellToWorld(cell), index++);
+			DrawSpace(cell, index++);
 	}
 
-	private void DrawSpace(Vector3 position, int index) {
+	private void DrawSpace(Vector3Int cell, int index) {
+
+		var fill = new Color(1f, 1f, 1f, 0.1f);
+		var outline = Color.white;
+		var bounds = grid.GetBoundsLocal(cell);
+		var position = grid.CellToWorld(cell);
+		var rect = new Rect(position - new Vector3(bounds.extents.x, bounds.extents.y), bounds.size);
+		Handles.DrawSolidRectangleWithOutline(rect, fill, outline);
+
 		var textStyle = new GUIStyle();
+		float zoom = SceneView.currentDrawingSceneView.camera.orthographicSize;
+		int fontSize = 96;
 		textStyle.fontStyle = FontStyle.Bold;
-		textStyle.fontSize = 16;
+		textStyle.fontSize = Mathf.FloorToInt(fontSize / zoom);
 		textStyle.alignment = TextAnchor.MiddleCenter;
 		textStyle.normal.textColor = Color.white;
 		Handles.Label(position, index.ToString(), textStyle);

@@ -103,7 +103,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 344f3c755c1989c4299fed191d441456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  snakes: []
+  snakes:
+  - {fileID: 0}
   ladders: []
   gamePieces:
   - {fileID: 0}
@@ -111,6 +112,7 @@ MonoBehaviour:
   moveSteps: 100
   spaces: []
   grid: {fileID: 529876682769341069}
+  spacePrefab: {fileID: 5861513320241456383, guid: 0dbd0a4ae2fe0cb449a5615c7f2f2ba7, type: 3}
 --- !u!1 &529876684113100788
 GameObject:
   m_ObjectHideFlags: 0
