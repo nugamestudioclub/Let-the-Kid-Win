@@ -88,7 +88,7 @@ public static class VectorMath {
 	 */
 
 	public static IEnumerable<Vector3> InterpolateCurve(IList<Vector3> points, int segmentLength, int samplesPerSegment) {
-		var sourcePoints = points.ToList();
+		var sourcePoints = points is List<Vector3> pointsList ? pointsList : points.ToList();
 		int segments = (points.Count - 1) / (segmentLength - 1);
 		for( int i = 0; i < segments - 1; ++i ) {
 			foreach( var point in InterpolateSegment(
