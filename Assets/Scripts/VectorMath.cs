@@ -90,16 +90,17 @@ public static class VectorMath {
 	public static IEnumerable<Vector3> InterpolateCurve(IList<Vector3> points, int segmentLength, int samplesPerSegment) {
 		var sourcePoints = points is List<Vector3> pointsList ? pointsList : points.ToList();
 		int segments = (points.Count - 1) / (segmentLength - 1);
+		int startIndex = 0;
+		// First n-1 segments
 		for( int i = 0; i < segments - 1; ++i ) {
-			foreach( var point in InterpolateSegment(
-				sourcePoints.GetRange(i * (segmentLength - 1), segmentLength), samplesPerSegment)
-				)
+			foreach( var point in InterpolateSegment(sourcePoints.GetRange(startIndex, segmentLength), samplesPerSegment) )
 				yield return point;
-			foreach( var point in InterpolateSegment(
-				sourcePoints.GetRange(segments * (segmentLength - 1), sourcePoints.Count - segments * (segmentLength - 1)), samplesPerSegment)
-				)
-				yield return point;
-			yield return points[^1];
+			startIndex += segmentLength - 1;
 		}
+		// Last segment (including extra vertices)
+		foreach( var point in InterpolateSegment(sourcePoints.GetRange(startIndex, sourcePoints.Count - startIndex), samplesPerSegment) )
+			yield return point;
+		// Endpoint
+		yield return points[^1];
 	}
 }

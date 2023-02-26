@@ -37,7 +37,7 @@ public class Transporter : MonoBehaviour {
 		var curvePoints = points.Select(t => t.position).ToArray();
 
 		Gizmos.color = Color.blue;
-		foreach( var point in VectorMath.InterpolateCurve(curvePoints, 3, 4) )
+		foreach( var point in VectorMath.InterpolateCurve(curvePoints, 3, 24) )
 			Gizmos.DrawWireSphere(point, gizmoPointSize / 2);
 	}
 
