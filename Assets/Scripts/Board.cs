@@ -34,13 +34,53 @@ public class Board : MonoBehaviour
     //Spaces
     [SerializeField]
     private List<Transform> spaces = new();
+
+    //grid
+    [SerializeField]
+    private Grid grid;
     void Awake()
     {
+        spaces.AddRange(GetGridTransforms());
         //initialize starting positions
         foreach (GameObject piece in gamePieces) {
             playerPositions.Add(0);
             piece.transform.position = spaces[0].position;
         }
+    }
+
+    private List<Transform> GetGridTransforms()
+    {
+        List<Transform> result = new();
+        int width = 7;
+        int height = 7;
+        for (int row = 0; row < height; row++)
+        {
+            if (row % 2 == 0)
+            {
+                for (int col = 0; col < width; col++)
+                {
+                    result.Add(CreateSpace(col, row).transform);
+                }
+            }
+            else
+            {
+                for (int col = width - 1; col >= 0; col--)
+                {
+                    result.Add(CreateSpace(col, row).transform);
+                }
+            }
+
+
+        }
+        return result;
+    }
+
+    private GameObject CreateSpace(int x, int y)
+    {
+        Vector3 spacePosition = grid.CellToWorld(new Vector3Int(x, y, 0));
+        GameObject spaceObject = new();
+        spaceObject.transform.position = spacePosition;
+        return spaceObject;
     }
 
     private void Update()
