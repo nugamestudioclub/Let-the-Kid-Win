@@ -97,8 +97,9 @@ public class Board : MonoBehaviour {
 
 	public void MovePlayer(int playerID, int spaces) {
 		if( gamePieces[playerID] != null ) {
-			//run movement coroutine
-			StartCoroutine(GoMovePlayer(playerID, spaces));
+            //run movement coroutine
+            Debug.Log($"Player {playerID} is moving {spaces} spaces");
+            StartCoroutine(GoMovePlayer(playerID, spaces));
 		}
 		else {
 			Debug.Log($"Player {playerID} is not initialized");
@@ -109,8 +110,7 @@ public class Board : MonoBehaviour {
 		for( int i = 0; i < spaces; i++ ) {
 			yield return StartCoroutine(NextSpace(playerID));
 		}
-		FinishMoving(playerID, playerPositions[playerID]);
-		yield return null;
+		yield return FinishMoving(playerID, playerPositions[playerID]);
 	}
 
 	private IEnumerator NextSpace(int playerID) {
@@ -130,7 +130,7 @@ public class Board : MonoBehaviour {
 		}
 	}
 
-	private void FinishMoving(int playerID, int space) {
+	private IEnumerator FinishMoving(int playerID, int space) {
 		Debug.Log($"Player {playerID} landed on space {space}!");
 		// if space ended moving on is a shoot or ladder
 		int ladderIndex = LadderStartPositions.IndexOf(space);
@@ -138,17 +138,18 @@ public class Board : MonoBehaviour {
 		if( ladderIndex != -1 ) {
 			var ladder = ladders[ladderIndex];
 			Debug.Log($"Player {playerID} is taking a ladder from {ladder.StartIndex} to {ladder.EndIndex}!");
-			StartCoroutine(MoveThroughTransporter(
+			yield return StartCoroutine(MoveThroughTransporter(
 				playerID,
 				ladder));
 		}
 		else if( snakeIndex != -1 ) {
 			var snake = snakes[snakeIndex];
 			Debug.Log($"Player {playerID} is taking a snake from {snake.StartIndex} to {snake.EndIndex}!");
-			StartCoroutine(MoveThroughTransporter(
+            yield return StartCoroutine(MoveThroughTransporter(
 				playerID,
 				snake));
 		}
+		GameState.Instance.NextState();
 	}
 
 	private IEnumerator MoveThroughTransporter(int playerID, Transporter transporter) {
