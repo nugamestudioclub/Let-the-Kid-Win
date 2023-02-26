@@ -171,6 +171,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8286006958151309753, guid: 6fe248bd3ab77174585b4781ee567554, type: 3}
+      propertyPath: useInterpolated
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8286006958151309753, guid: 6fe248bd3ab77174585b4781ee567554, type: 3}
       propertyPath: points.Array.size
       value: 9
       objectReference: {fileID: 0}
@@ -834,10 +838,6 @@ PrefabInstance:
       propertyPath: snakes.Array.data[0]
       value: 
       objectReference: {fileID: 725627831}
-    - target: {fileID: 529876683054896821, guid: 5fe51675bcd28e04c991cea17088e5ba, type: 3}
-      propertyPath: gamePieces.Array.data[0]
-      value: 
-      objectReference: {fileID: 603671265}
     - target: {fileID: 529876683054896822, guid: 5fe51675bcd28e04c991cea17088e5ba, type: 3}
       propertyPath: m_RootOrder
       value: 1

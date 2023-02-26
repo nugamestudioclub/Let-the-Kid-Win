@@ -154,14 +154,14 @@ public class Board : MonoBehaviour {
 
 	private IEnumerator MoveThroughTransporter(int playerID, Transporter transporter) {
 		Debug.Log($"Transporter length: {transporter.Points.Count}");
-
+		Debug.Log($"Total distance of snake: {transporter.TotalLength}");
 		for( int i = 0; i < transporter.Points.Count -1; i++ ) {
 			float distanceToTravel = transporter.DistanceToNextPoint(i);
 			float timeToMove = (distanceToTravel / transporter.TotalLength) * transporter.TransportTime;
 			yield return MovePieceBetweenPoints(
 				playerID,
-				transporter.Points[i].position,
-				transporter.Points[i + 1].position,
+				transporter.Points[i],
+				transporter.Points[i + 1],
 				timeToMove);
 		}
 		playerPositions[playerID] = transporter.EndIndex;
