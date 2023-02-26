@@ -695,10 +695,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 529876683054896821, guid: 5fe51675bcd28e04c991cea17088e5ba, type: 3}
-      propertyPath: snakes.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 529876683054896821, guid: 5fe51675bcd28e04c991cea17088e5ba, type: 3}
       propertyPath: snakes.Array.data[0]
       value: 
       objectReference: {fileID: 725627831}
