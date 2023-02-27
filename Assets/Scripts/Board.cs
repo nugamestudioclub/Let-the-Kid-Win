@@ -7,23 +7,12 @@ using UnityEngine;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Board : MonoBehaviour {
-	private const int WIDTH = 7;
-	private const int HEIGHT = 7;
-
-	//Snakes
 	[SerializeField]
 	private List<Transporter> snakes = new();
-	private List<int> SnakeStartPositions {
-		get => snakes.Select(s => s.StartIndex).ToList();
-	}
-	//Ladders
+
 	[SerializeField]
 	private List<Transporter> ladders = new();
-	private List<int> LadderStartPositions {
-		get => ladders.Select(l => l.StartIndex).ToList();
-	}
 
-	//Game Pieces
 	[SerializeField]
 	private List<GameObject> gamePieces = new();
 
@@ -34,24 +23,30 @@ public class Board : MonoBehaviour {
 	[SerializeField]
 	private float moveSteps = 30f;
 
-	//Spaces
 	[SerializeField]
-	private List<BoardSpace> spaces = new();
+	private List<BoardSpace> spaces;
 
-	//Grid
 	[SerializeField]
 	private Grid grid;
+
+	[SerializeField]
+	private Vector2Int dimensions;
 
 	[SerializeField]
 	private BoardSpace spacePrefab;
 
 	void Awake() {
-		spaces.AddRange(CreateAllSpaces());
+		spaces = CreateAllSpaces();
 		//initialize starting positions
 		foreach( GameObject piece in gamePieces ) {
 			playerPositions.Add(0);
 			piece.transform.position = spaces[0].transform.position;
 		}
+	}
+
+	void Start() {
+		for( int i = 0; i < snakes.Count; ++i )
+			ConnectSnake(i);
 	}
 
 	void Update() {
@@ -63,30 +58,40 @@ public class Board : MonoBehaviour {
 		}
 	}
 
-	public BoardSpace GetSpace(int x, int y) {
-		return spaces[IndexOfCell(x, y)];
+	private void ConnectSnake(int index) {
+		var snake = snakes[index];
+		var start = GetWorldPosition(snake.StartIndex);
+		var end = GetWorldPosition(snake.EndIndex);
+		snake.ConnectPoints(start, end);
 	}
 
-	public BoardSpace GetSpace(int index) {
-		return spaces[index];
+	private int CellToIndex(int x, int y) {
+		return (dimensions.y * y) + (y % 2 == 0 ? x : dimensions.x - x - 1);
 	}
 
-	private int IndexOfCell(int x, int y) {
-		return (HEIGHT * y) + (y % 2 == 0 ? x : WIDTH - x - 1);
+	private Vector3Int IndexToCell(int index) {
+		return new(
+			index / dimensions.x % 2 == 0 ? index % dimensions.x : dimensions.x - index % dimensions.x - 1,
+			index / dimensions.x
+		);
 	}
 
-	private IEnumerable<Vector3Int> GetCells() {
-		for( int row = 0; row < HEIGHT; ++row )
+	private Vector3 GetWorldPosition(int index) {
+		return grid.CellToWorld(IndexToCell(index));
+	}
+
+	private IEnumerable<Vector3Int> GetCellPositions() {
+		for( int row = 0; row < dimensions.y; ++row )
 			if( row % 2 == 0 )
-				for( int col = 0; col < WIDTH; ++col )
+				for( int col = 0; col < dimensions.x; ++col )
 					yield return new(col, row, 0);
 			else
-				for( int col = WIDTH - 1; col >= 0; --col )
+				for( int col = dimensions.x - 1; col >= 0; --col )
 					yield return new(col, row, 0);
 	}
 
 	private List<BoardSpace> CreateAllSpaces() {
-		return GetCells().Select(cell => CreateSpace(cell.x, cell.y)).ToList();
+		return GetCellPositions().Select(cell => CreateSpace(cell.x, cell.y)).ToList();
 	}
 
 	private BoardSpace CreateSpace(int x, int y) {
@@ -97,9 +102,9 @@ public class Board : MonoBehaviour {
 
 	public void MovePlayer(int playerID, int spaces) {
 		if( gamePieces[playerID] != null ) {
-            //run movement coroutine
-            Debug.Log($"Player {playerID} is moving {spaces} spaces");
-            StartCoroutine(GoMovePlayer(playerID, spaces));
+			//run movement coroutine
+			Debug.Log($"Player {playerID} is moving {spaces} spaces");
+			StartCoroutine(GoMovePlayer(playerID, spaces));
 		}
 		else {
 			Debug.Log($"Player {playerID} is not initialized");
@@ -130,22 +135,31 @@ public class Board : MonoBehaviour {
 		}
 	}
 
-	private IEnumerator FinishMoving(int playerID, int space) {
-		Debug.Log($"Player {playerID} landed on space {space}!");
+	private int FindSnakeAt(int boardIndex) {
+		return snakes.FindIndex(s => s.StartIndex == boardIndex);
+	}
+
+	private int FindLadderAt(int boardIndex) {
+		return ladders.FindIndex(l => l.StartIndex == boardIndex);
+	}
+
+	private IEnumerator FinishMoving(int playerID, int boardIndex) {
+		Debug.Log($"Player {playerID} landed on space {boardIndex}!");
 		// if space ended moving on is a shoot or ladder
-		int ladderIndex = LadderStartPositions.IndexOf(space);
-		int snakeIndex = SnakeStartPositions.IndexOf(space);
-		if( ladderIndex != -1 ) {
+		int ladderIndex = FindLadderAt(boardIndex);
+		int snakeIndex = FindSnakeAt(boardIndex);
+
+		if( ladderIndex >= 0 ) {
 			var ladder = ladders[ladderIndex];
 			Debug.Log($"Player {playerID} is taking a ladder from {ladder.StartIndex} to {ladder.EndIndex}!");
 			yield return StartCoroutine(MoveThroughTransporter(
 				playerID,
 				ladder));
 		}
-		else if( snakeIndex != -1 ) {
+		else if( snakeIndex >= 0 ) {
 			var snake = snakes[snakeIndex];
 			Debug.Log($"Player {playerID} is taking a snake from {snake.StartIndex} to {snake.EndIndex}!");
-            yield return StartCoroutine(MoveThroughTransporter(
+			yield return StartCoroutine(MoveThroughTransporter(
 				playerID,
 				snake));
 		}
@@ -171,14 +185,19 @@ public class Board : MonoBehaviour {
 #if UNITY_EDITOR
 	private void OnDrawGizmos() {
 		int index = 0;
-		foreach( var cell in GetCells() )
+		foreach( var cell in GetCellPositions() )
 			DrawSpace(cell, index++);
+		for( int i = 0; i < snakes.Count; ++i )
+			DrawSnake(i);
 	}
+
+	[SerializeField]
+	private Color gizmoSpaceColor = Color.white;
 
 	private void DrawSpace(Vector3Int cell, int index) {
 
 		var fill = new Color(1f, 1f, 1f, 0.1f);
-		var outline = Color.white;
+		var outline = gizmoSpaceColor;
 		var bounds = grid.GetBoundsLocal(cell);
 		var position = grid.CellToWorld(cell);
 		var rect = new Rect(position - new Vector3(bounds.extents.x, bounds.extents.y), bounds.size);
@@ -190,8 +209,40 @@ public class Board : MonoBehaviour {
 		textStyle.fontStyle = FontStyle.Bold;
 		textStyle.fontSize = Mathf.FloorToInt(fontSize / zoom);
 		textStyle.alignment = TextAnchor.MiddleCenter;
-		textStyle.normal.textColor = Color.white;
+		textStyle.normal.textColor = gizmoSpaceColor;
 		Handles.Label(position, index.ToString(), textStyle);
+	}
+
+	[SerializeField]
+	private float gizmoSnakeScale = 0.25f;
+
+	[SerializeField]
+	private Color gizmoSnakePrimaryColor = Color.white;
+
+	[SerializeField]
+	private Color gizmoSnakeSecondaryColor = Color.yellow;
+
+	private void DrawSnake(int index) {
+		var oldColor = Gizmos.color;
+		Gizmos.color = gizmoSnakePrimaryColor;
+
+		var snake = snakes[index];
+		var start = GetWorldPosition(snake.StartIndex);
+		var end = GetWorldPosition(snake.EndIndex);
+
+		Gizmos.DrawWireSphere(start, gizmoSnakeScale / 2);
+		foreach( var transform in snake.PointTransforms )
+			Gizmos.DrawWireSphere(transform.position, gizmoSnakeScale / 2);
+		Gizmos.DrawWireSphere(end, gizmoSnakeScale / 2);
+
+		Gizmos.color = gizmoSnakeSecondaryColor;
+		ConnectSnake(index);
+
+		foreach( var point in snake.Points )
+			Gizmos.DrawWireSphere(point, gizmoSnakeScale);
+
+
+		Gizmos.color = oldColor;
 	}
 #endif
 }

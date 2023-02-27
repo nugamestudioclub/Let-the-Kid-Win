@@ -5,69 +5,56 @@ using UnityEditor;
 using UnityEngine;
 
 public class Transporter : MonoBehaviour {
-	[SerializeField]
-	private int startIndex;
-	public int StartIndex { get => startIndex; }
-	[SerializeField]
-	private int endIndex;
-	public int EndIndex { get => endIndex; }
+	[field: SerializeField]
+	public int StartIndex { get; private set; }
+
+	[field: SerializeField]
+	public int EndIndex { get; private set; }
 
 	[SerializeField]
-	bool useInterpolated = true;
+	private bool useInterpolation = true;
 
 	[SerializeField]
-	private List<Transform> points = new();
-	public List<Vector3> Points {
-		get {
-			if( runtimePoints.Count == 0 ) {
-				runtimePoints = useInterpolated
-			 ? InterpolatePoints()
-			 : points.Select(p => p.position).ToList();
-			}
+	private int segmentLength = 3;
 
-			return runtimePoints;
-		}
+	[SerializeField]
+	private int samplesPerSegment = 9;
 
-	}
+	[SerializeField]
+	private List<Transform> pointTransforms = new();
+	public IReadOnlyList<Transform> PointTransforms => pointTransforms;
 
-
-	private List<Vector3> runtimePoints = new();
+	private List<Vector3> points = new();
+	public IReadOnlyList<Vector3> Points => points;
 
 	private List<float> distanceBetweenPoints = new();
-
-	[SerializeField]
-	private float gizmoPointSize = 0.25f;
 
 	[SerializeField]
 	private int transportTime;
 	public int TransportTime { get => transportTime; }
 
 	private void Awake() {
+		points = GetPoints().ToList();
+		CalculateDistanceBetweenPoints();
+	}
+	
+	public void ConnectPoints(Vector3 start, Vector3 end) {
+		var points = GetPoints().Prepend(start).Append(end).ToList();
+		this.points.Clear();
+		this.points.AddRange(useInterpolation
+			? VectorMath.InterpolateCurve(points, segmentLength, samplesPerSegment)
+			: points
+		);
 		CalculateDistanceBetweenPoints();
 	}
 
-	private void OnDrawGizmosSelected() {
-		foreach( var point in points ) {
-			Gizmos.color = Color.white;
-			Gizmos.DrawWireSphere(point.position, gizmoPointSize);
-		}
-
-		Gizmos.color = Color.blue;
-		foreach( var point in InterpolatePoints() )
-			Gizmos.DrawWireSphere(point, gizmoPointSize / 2);
-	}
-
-	private List<Vector3> InterpolatePoints() {
-		// Debug.Log($"Calling interpolate points");
-		var curvePoints = points.Select(t => t.position).ToList();
-		return VectorMath.InterpolateCurve(
-			curvePoints,
-			segmentLength: 3,
-			samplesPerSegment: 24).ToList();
+	private IEnumerable<Vector3> GetPoints() {
+		return pointTransforms.Select(t => t.position).ToList();
 	}
 
 	private void CalculateDistanceBetweenPoints() {
 		// Debug.Log($"Num points in distance calc: {Points.Count}");
+		distanceBetweenPoints.Clear();
 		for( int i = 0; i < Points.Count - 1; i++ ) {
 			float distanceBetweenNextPoint = Vector3.Distance(Points[i], Points[i + 1]);
 			// Debug.Log($"Distance between next point: {distanceBetweenNextPoint}");

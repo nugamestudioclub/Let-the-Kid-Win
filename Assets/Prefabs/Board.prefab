@@ -115,7 +115,11 @@ MonoBehaviour:
   moveSteps: 100
   spaces: []
   grid: {fileID: 529876682769341069}
+  dimensions: {x: 7, y: 7}
   spacePrefab: {fileID: 5861513320241456383, guid: 0dbd0a4ae2fe0cb449a5615c7f2f2ba7, type: 3}
+  gizmoSnakeScale: 0.25
+  gizmoSnakePrimaryColor: {r: 1, g: 1, b: 1, a: 1}
+  gizmoSnakeSecondaryColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
 --- !u!1 &529876684113100788
 GameObject:
   m_ObjectHideFlags: 0
