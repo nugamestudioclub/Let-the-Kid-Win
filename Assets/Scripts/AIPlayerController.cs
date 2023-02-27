@@ -12,7 +12,7 @@ public class AIPlayerController : MonoBehaviour, IPlayerController
     public void TakeTurn()
     {   
         isTakingTurn = true;
-        float power = Random.Range(0, 1f);
+        float power = Random.Range(0.5f, 1f);
         GameState.Instance.Spinner.Spin(power);
     }
 

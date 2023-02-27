@@ -113,7 +113,7 @@ public class Board : MonoBehaviour {
 
 	private IEnumerator GoMovePlayer(int playerID, int spaces) {
 		for( int i = 0; i < spaces; i++ ) {
-			yield return StartCoroutine(NextSpace(playerID));
+			yield return NextSpace(playerID);
 		}
 		yield return FinishMoving(playerID, playerPositions[playerID]);
 	}
@@ -127,12 +127,19 @@ public class Board : MonoBehaviour {
 	}
 
 	private IEnumerator MovePieceBetweenPoints(int playerID, Vector2 startPoint, Vector2 endPoint, float moveTime) {
+		float adjustedMoveTime = 0;
 		float moveStep = moveTime / moveSteps;
 		for( float i = 0; i < (moveTime + moveStep); i += moveStep ) {
 			//take current position and 
 			gamePieces[playerID].transform.position = Vector2.Lerp(startPoint, endPoint, i / moveTime);
-			yield return new WaitForSeconds(moveStep);
+			adjustedMoveTime += moveStep;
+			if (adjustedMoveTime >= Time.fixedDeltaTime)
+			{
+                yield return new WaitForSeconds(Time.fixedDeltaTime);
+				adjustedMoveTime = 0;
+            }
 		}
+		yield return null;
 	}
 
 	private int FindSnakeAt(int boardIndex) {
@@ -152,16 +159,16 @@ public class Board : MonoBehaviour {
 		if( ladderIndex >= 0 ) {
 			var ladder = ladders[ladderIndex];
 			Debug.Log($"Player {playerID} is taking a ladder from {ladder.StartIndex} to {ladder.EndIndex}!");
-			yield return StartCoroutine(MoveThroughTransporter(
+			yield return MoveThroughTransporter(
 				playerID,
-				ladder));
+				ladder);
 		}
 		else if( snakeIndex >= 0 ) {
 			var snake = snakes[snakeIndex];
 			Debug.Log($"Player {playerID} is taking a snake from {snake.StartIndex} to {snake.EndIndex}!");
-			yield return StartCoroutine(MoveThroughTransporter(
+			yield return MoveThroughTransporter(
 				playerID,
-				snake));
+				snake);
 		}
 		GameState.Instance.NextState();
 	}
