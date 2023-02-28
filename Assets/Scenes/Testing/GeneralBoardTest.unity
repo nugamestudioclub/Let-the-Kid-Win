@@ -203,7 +203,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8286006958151309753, guid: 6fe248bd3ab77174585b4781ee567554, type: 3}
       propertyPath: transportTime
-      value: 1
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 8286006958151309753, guid: 6fe248bd3ab77174585b4781ee567554, type: 3}
       propertyPath: useInterpolated
@@ -219,7 +219,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8286006958151309753, guid: 6fe248bd3ab77174585b4781ee567554, type: 3}
       propertyPath: samplesPerSegment
-      value: 15
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 8286006958151309753, guid: 6fe248bd3ab77174585b4781ee567554, type: 3}
       propertyPath: points.Array.data[0]

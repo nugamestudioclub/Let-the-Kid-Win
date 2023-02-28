@@ -129,15 +129,15 @@ public class Board : MonoBehaviour {
 	private IEnumerator MovePieceBetweenPoints(int playerID, Vector2 startPoint, Vector2 endPoint, float moveTime) {
 		float adjustedMoveTime = 0;
 		float moveStep = moveTime / moveSteps;
+		var gamePiece = gamePieces[playerID];
 		for( float i = 0; i < (moveTime + moveStep); i += moveStep ) {
 			//take current position and 
-			gamePieces[playerID].transform.position = Vector2.Lerp(startPoint, endPoint, i / moveTime);
+			gamePiece.transform.position = Vector2.Lerp(startPoint, endPoint, i / moveTime);
 			adjustedMoveTime += moveStep;
-			if (adjustedMoveTime >= Time.fixedDeltaTime)
-			{
-                yield return new WaitForSeconds(Time.fixedDeltaTime);
+			if( adjustedMoveTime >= Time.fixedDeltaTime ) {
+				yield return new WaitForSeconds(Time.fixedDeltaTime);
 				adjustedMoveTime = 0;
-            }
+			}
 		}
 		yield return null;
 	}
@@ -159,31 +159,32 @@ public class Board : MonoBehaviour {
 		if( ladderIndex >= 0 ) {
 			var ladder = ladders[ladderIndex];
 			Debug.Log($"Player {playerID} is taking a ladder from {ladder.StartIndex} to {ladder.EndIndex}!");
-			yield return MoveThroughTransporter(
-				playerID,
-				ladder);
+			yield return MoveThroughTransporter(playerID, ladder);
 		}
 		else if( snakeIndex >= 0 ) {
 			var snake = snakes[snakeIndex];
 			Debug.Log($"Player {playerID} is taking a snake from {snake.StartIndex} to {snake.EndIndex}!");
-			yield return MoveThroughTransporter(
-				playerID,
-				snake);
+			yield return MoveThroughTransporter(playerID, snake);
 		}
 		GameState.Instance.NextState();
 	}
 
 	private IEnumerator MoveThroughTransporter(int playerID, Transporter transporter) {
-		Debug.Log($"Transporter length: {transporter.Points.Count}");
-		Debug.Log($"Total distance of snake: {transporter.TotalLength}");
-		for( int i = 0; i < transporter.Points.Count -1; i++ ) {
-			float distanceToTravel = transporter.DistanceToNextPoint(i);
-			float timeToMove = (distanceToTravel / transporter.TotalLength) * transporter.TransportTime;
+		Debug.Log($"Transporter length: {transporter.Path.Count}");
+		Debug.Log($"Total distance of snake: {transporter.Path.Length}");
+		for( int i = 0; i < transporter.Path.Count - 1; i++ ) {
+			float distanceToTravel = transporter.Path.GetDistanceBetween(i, i + 1);
+			float timeToMove = (distanceToTravel / transporter.Path.Length) * transporter.TransportTime;
+			/*
+			Debug.Log($"i={i} ({transporter.Path[i]}), i+1={i+1} ({transporter.Path[i+1]})");
+			Debug.Log($"distance={distanceToTravel}");
+			*/
 			yield return MovePieceBetweenPoints(
 				playerID,
-				transporter.Points[i],
-				transporter.Points[i + 1],
-				timeToMove);
+				transporter.Path[i],
+				transporter.Path[i + 1],
+				timeToMove
+			);
 		}
 		playerPositions[playerID] = transporter.EndIndex;
 		yield return null;
@@ -245,7 +246,7 @@ public class Board : MonoBehaviour {
 		Gizmos.color = gizmoSnakeSecondaryColor;
 		ConnectSnake(index);
 
-		foreach( var point in snake.Points )
+		foreach( var point in snake.Path )
 			Gizmos.DrawWireSphere(point, gizmoSnakeScale);
 
 
