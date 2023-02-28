@@ -50,12 +50,11 @@ public class Board : MonoBehaviour {
 	}
 
 	void Update() {
-		if( Input.GetKeyDown(KeyCode.Alpha1) ) {
-			MovePlayer(0, 1);
-		}
-		if( Input.GetKeyDown(KeyCode.Alpha2) ) {
-			MovePlayer(0, 2);
-		}
+		for( int i = 1; i <= 6; ++i )
+			if( Input.GetKeyDown(KeyCode.Alpha0 + i) ) {
+				MovePlayer(0, i);
+				break;
+			}
 	}
 
 	private void ConnectSnake(int index) {

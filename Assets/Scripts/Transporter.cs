@@ -5,20 +5,14 @@ using UnityEditor;
 using UnityEngine;
 
 public class Transporter : MonoBehaviour {
+	[SerializeField]
+	private InterpolationSettings interpolation = InterpolationSettings.Default;
+
 	[field: SerializeField]
 	public int StartIndex { get; private set; }
 
 	[field: SerializeField]
 	public int EndIndex { get; private set; }
-
-	[SerializeField]
-	private bool useInterpolation = true;
-
-	[SerializeField]
-	private int segmentLength = 3;
-
-	[SerializeField]
-	private int samplesPerSegment = 9;
 
 	[SerializeField]
 	private List<Transform> pointTransforms = new();
@@ -39,8 +33,8 @@ public class Transporter : MonoBehaviour {
 	public void ConnectPoints(Vector3 start, Vector3 end) {
 		var points = GetPoints().Prepend(start).Append(end).ToList();
 		path.Clear();
-		path.AddRange(useInterpolation
-			? VectorMath.InterpolateCurve(points, segmentLength, samplesPerSegment)
+		path.AddRange(interpolation.Enabled
+			? VectorMath.InterpolateCurve(points, interpolation.VerticesPerSegment, interpolation.Samples)
 			: points
 		);
 	}

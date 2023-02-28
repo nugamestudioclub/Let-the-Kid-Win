@@ -5,7 +5,7 @@ using UnityEngine;
 public interface IReadOnlyPath3 : IReadOnlyPath<float, Vector3> { }
 public interface IPath3 : IReadOnlyPath3, IPath<float, Vector3> { }
 
-public class Path3 : MonoBehaviour, IPath3 {
+public class Path3 : IPath3 {
 	private readonly List<Vector3> points;
 
 	private readonly List<float> nextPointDistances;

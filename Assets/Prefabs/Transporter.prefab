@@ -108,12 +108,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 316880dc68f2da54d8c64c6b6a82e5e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startIndex: 1
-  endIndex: 0
-  points:
-  - {fileID: 0}
-  - {fileID: 8286006956846408028}
-  - {fileID: 8286006957916219084}
-  - {fileID: 0}
-  gizmoPointSize: 0.25
+  interpolationSettings:
+    enabled: 1
+    verticesPerSegment: 3
+    samples: 9
+  <StartIndex>k__BackingField: 0
+  <EndIndex>k__BackingField: 0
+  useInterpolation: 1
+  segmentLength: 3
+  samplesPerSegment: 9
+  pointTransforms: []
   transportTime: 3

@@ -36,17 +36,18 @@ public static class VectorMath {
 		var start = points[0];
 		var end = points[^1];
 		var delta = new Vector3(end.x - start.x, end.y - start.y);
+		int vertexCount = points.Count * samples;
 
 		if( Math.Abs(delta.x) > Math.Abs(delta.y) ) {
-			float epsilon = delta.x / samples;
+			float epsilon = delta.x / vertexCount;
 			yield return start;
-			for( int i = 1; i < samples; ++i )
+			for( int i = 1; i < vertexCount; ++i )
 				yield return InterpolateX(points, start.x + (i * epsilon));
 		}
 		else {
+			float epsilon = delta.y / vertexCount;
 			yield return start;
-			float epsilon = delta.y / samples;
-			for( int i = 1; i < samples; ++i )
+			for( int i = 1; i < vertexCount; ++i )
 				yield return InterpolateY(points, start.y + (i * epsilon));
 		}
 	}
