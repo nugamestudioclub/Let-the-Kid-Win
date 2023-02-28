@@ -109,14 +109,15 @@ MonoBehaviour:
   - {fileID: 0}
   ladders: []
   gamePieces:
-  - {fileID: 2478073402181732862}
-  - {fileID: 6323249919942165226}
+  - {fileID: 6127758021513340414}
+  - {fileID: 7921038458941933668}
   moveTime: 0.5
   moveSteps: 100
   spaces: []
   grid: {fileID: 529876682769341069}
   dimensions: {x: 7, y: 7}
   spacePrefab: {fileID: 5861513320241456383, guid: 0dbd0a4ae2fe0cb449a5615c7f2f2ba7, type: 3}
+  gizmoSpaceColor: {r: 1, g: 1, b: 1, a: 1}
   gizmoSnakeScale: 0.25
   gizmoSnakePrimaryColor: {r: 1, g: 1, b: 1, a: 1}
   gizmoSnakeSecondaryColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
@@ -261,16 +262,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 543425d4ddcddec408f267ba01315489, type: 3}
---- !u!1 &2478073402181732862 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1815999748128971743, guid: 543425d4ddcddec408f267ba01315489, type: 3}
-  m_PrefabInstance: {fileID: 4274013385283064353}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5189542338817981715 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8310458271862861618, guid: 543425d4ddcddec408f267ba01315489, type: 3}
   m_PrefabInstance: {fileID: 4274013385283064353}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6127758021513340414 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7951795580510255071, guid: 543425d4ddcddec408f267ba01315489, type: 3}
+  m_PrefabInstance: {fileID: 4274013385283064353}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b94809d6dfda5824fa14e93a2ec3ca8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7704249200219136150
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -280,7 +287,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4407422703616500348, guid: e8d145a290a430d46a170e3a300588cb, type: 3}
       propertyPath: m_Name
-      value: GrampaPiece
+      value: GrandpaPiece
       objectReference: {fileID: 0}
     - target: {fileID: 4407422703616500350, guid: e8d145a290a430d46a170e3a300588cb, type: 3}
       propertyPath: m_RootOrder
@@ -333,8 +340,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4407422703616500350, guid: e8d145a290a430d46a170e3a300588cb, type: 3}
   m_PrefabInstance: {fileID: 7704249200219136150}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6323249919942165226 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4407422703616500348, guid: e8d145a290a430d46a170e3a300588cb, type: 3}
+--- !u!114 &7921038458941933668 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 506605853270812914, guid: e8d145a290a430d46a170e3a300588cb, type: 3}
   m_PrefabInstance: {fileID: 7704249200219136150}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aff0da924de098c46b6e504edd1082e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

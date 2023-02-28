@@ -8,13 +8,16 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Board : MonoBehaviour {
 	[SerializeField]
+	private bool debugMode;
+
+	[SerializeField]
 	private List<Transporter> snakes = new();
 
 	[SerializeField]
 	private List<Transporter> ladders = new();
 
 	[SerializeField]
-	private List<GameObject> gamePieces = new();
+	private List<PlayerController> gamePieces = new();
 
 	private List<int> playerPositions = new();
 
@@ -38,7 +41,7 @@ public class Board : MonoBehaviour {
 	void Awake() {
 		spaces = CreateAllSpaces();
 		//initialize starting positions
-		foreach( GameObject piece in gamePieces ) {
+		foreach( var piece in gamePieces ) {
 			playerPositions.Add(0);
 			piece.transform.position = spaces[0].transform.position;
 		}
@@ -50,9 +53,18 @@ public class Board : MonoBehaviour {
 	}
 
 	void Update() {
+		if( debugMode )
+			DebugUpdate();
+	}
+
+	private void DebugUpdate() {
+		int playerID = (int)Player.Grandpa;
+		var player = gamePieces[playerID];
+		if( player.IsMoving )
+			return;
 		for( int i = 1; i <= 6; ++i )
 			if( Input.GetKeyDown(KeyCode.Alpha0 + i) ) {
-				MovePlayer(0, i);
+				MovePlayer(playerID, i);
 				break;
 			}
 	}
@@ -118,25 +130,10 @@ public class Board : MonoBehaviour {
 	}
 
 	private IEnumerator NextSpace(int playerID) {
-		var currentSpace = spaces[playerPositions[playerID]];
 		var nextSpace = spaces[playerPositions[playerID] + 1];
 		var gamePiece = gamePieces[playerID];
-		yield return MoveBetween(gamePiece.transform, currentSpace.transform.position, nextSpace.transform.position, moveTime);
+		yield return gamePiece.MoveTo(nextSpace.transform.position, moveTime, (int)moveSteps);
 		playerPositions[playerID]++;
-	}
-
-	private IEnumerator MoveBetween(Transform transform, Vector2 startPoint, Vector2 endPoint, float moveTime) {
-		float adjustedMoveTime = 0;
-		float moveStep = moveTime / moveSteps;
-		for( float i = 0; i < (moveTime + moveStep); i += moveStep ) {
-			transform.position = Vector2.Lerp(startPoint, endPoint, i / moveTime);
-			adjustedMoveTime += moveStep;
-			if( adjustedMoveTime >= Time.fixedDeltaTime ) {
-				yield return new WaitForSeconds(Time.fixedDeltaTime);
-				adjustedMoveTime = 0;
-			}
-		}
-		yield return null;
 	}
 
 	private int FindSnakeAt(int boardIndex) {
@@ -152,35 +149,20 @@ public class Board : MonoBehaviour {
 		// if space ended moving on is a shoot or ladder
 		int ladderIndex = FindLadderAt(boardIndex);
 		int snakeIndex = FindSnakeAt(boardIndex);
+		var player = gamePieces[playerID]; 
 
 		if( ladderIndex >= 0 ) {
 			var ladder = ladders[ladderIndex];
 			Debug.Log($"Player {playerID} is taking a ladder from {ladder.StartIndex} to {ladder.EndIndex}!");
-			yield return MoveAlong(playerID, ladder.Path, ladder.TransportTime);
+			yield return player.MoveAlong(ladder.Path, ladder.TransportTime, (int)moveSteps);
 			playerPositions[playerID] = ladder.EndIndex;
 		}
 		else if( snakeIndex >= 0 ) {
 			var snake = snakes[snakeIndex];
 			Debug.Log($"Player {playerID} is taking a snake from {snake.StartIndex} to {snake.EndIndex}!");
-			yield return MoveAlong(playerID, snake.Path, snake.TransportTime);
+			yield return player.MoveAlong(snake.Path, snake.TransportTime, (int)moveSteps);
 			playerPositions[playerID] = snake.EndIndex;
 		}
-	}
-
-	private IEnumerator MoveAlong(int playerID, IReadOnlyPath<Vector3> path, float time) {
-		Debug.Log($"Transporter length: {path.Count}");
-		Debug.Log($"Total distance of snake: {path.Length}");
-		var gamePiece = gamePieces[playerID];
-		for( int i = 0; i < path.Count - 1; i++ ) {
-			float distanceToTravel = path.GetDistanceBetween(i, i + 1);
-			float timeToMove = (distanceToTravel / path.Length) * time;
-			/*
-			Debug.Log($"i={i} ({transporter.Path[i]}), i+1={i+1} ({transporter.Path[i+1]})");
-			Debug.Log($"distance={distanceToTravel}");
-			*/
-			yield return MoveBetween(gamePiece.transform, path[i], path[i + 1], timeToMove);
-		}
-		yield return null;
 	}
 
 #if UNITY_EDITOR

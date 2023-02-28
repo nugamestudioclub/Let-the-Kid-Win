@@ -92,22 +92,22 @@ public static class VectorMath {
 	                       8 9 10
 	 */
 
-	public static IEnumerable<Vector3> InterpolateCurve(IEnumerable<Vector3> points, int segmentLength, int samplesPerSegment) {
+	public static IEnumerable<Vector3> InterpolateCurve(IEnumerable<Vector3> points, int verticesPerSegment, int samples) {
 		var sourcePoints = new List<Vector3>(points);
 		// Prune overlapping vertices
 		for( int i = sourcePoints.Count - 1; i > 0; --i )
 			if( Math.Abs(Vector3.Distance(sourcePoints[i], sourcePoints[i - 1])) <= float.Epsilon )
 				sourcePoints.RemoveAt(i);
-		int segments = (sourcePoints.Count - 1) / (segmentLength - 1);
+		int segments = (sourcePoints.Count - 1) / (verticesPerSegment - 1);
 		int startIndex = 0;
 		// First n-1 segments
 		for( int i = 0; i < segments - 1; ++i ) {
-			foreach( var point in InterpolateSegment(sourcePoints.GetRange(startIndex, segmentLength), samplesPerSegment) )
+			foreach( var point in InterpolateSegment(sourcePoints.GetRange(startIndex, verticesPerSegment), samples) )
 				yield return point;
-			startIndex += segmentLength - 1;
+			startIndex += verticesPerSegment - 1;
 		}
 		// Last segment (including extra vertices)
-		foreach( var point in InterpolateSegment(sourcePoints.GetRange(startIndex, sourcePoints.Count - startIndex), samplesPerSegment) )
+		foreach( var point in InterpolateSegment(sourcePoints.GetRange(startIndex, sourcePoints.Count - startIndex), samples) )
 			yield return point;
 		// Endpoint
 		yield return sourcePoints[^1];

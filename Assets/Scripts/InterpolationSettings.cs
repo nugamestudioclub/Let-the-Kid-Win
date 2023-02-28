@@ -15,6 +15,12 @@ public struct InterpolationSettings {
 	private int samples;
 	public int Samples => samples;
 
+	public readonly static InterpolationSettings Default = new(
+		enabled: true,
+		verticesPerSegment: 3,
+		samples: 3
+	);
+
 	public InterpolationSettings(bool enabled, int verticesPerSegment, int samples) {
 		if( verticesPerSegment < 2 )
 			throw new ArgumentOutOfRangeException(nameof(verticesPerSegment));
@@ -24,6 +30,4 @@ public struct InterpolationSettings {
 		this.verticesPerSegment = verticesPerSegment;
 		this.samples = samples;
 	}
-
-	public readonly static InterpolationSettings Default = new(true, 3, 3);
 }

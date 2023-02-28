@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Transporter : MonoBehaviour {
 	[SerializeField]
-	private InterpolationSettings interpolation = InterpolationSettings.Default;
+	private InterpolationSettings interpolationSettings = InterpolationSettings.Default;
 
 	[field: SerializeField]
 	public int StartIndex { get; private set; }
@@ -23,7 +23,6 @@ public class Transporter : MonoBehaviour {
 	public float TransportTime { get => transportTime; }
 
 	private readonly Path3 path = new();
-
 	public IReadOnlyPath<Vector3> Path => path;
 
 	private void Awake() {
@@ -33,10 +32,8 @@ public class Transporter : MonoBehaviour {
 	public void ConnectPoints(Vector3 start, Vector3 end) {
 		var points = GetPoints().Prepend(start).Append(end).ToList();
 		path.Clear();
-		path.AddRange(interpolation.Enabled
-			? VectorMath.InterpolateCurve(points, interpolation.VerticesPerSegment, interpolation.Samples)
-			: points
-		);
+		path.AddRange(points);
+		Paths.Interpolate(path, interpolationSettings);
 	}
 
 	private IEnumerable<Vector3> GetPoints() {
