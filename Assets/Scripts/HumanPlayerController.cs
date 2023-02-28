@@ -21,7 +21,7 @@ public class HumanPlayerController : MonoBehaviour, IPlayerController
     {
         if (isTakingTurn && Input.GetKeyDown(KeyCode.Space)) {
             hitSpin = true;
-            float power = Random.Range(0, 1f);
+            float power = Random.Range(0.2f, 1f);
             GameState.Instance.Spinner.Spin(power);
         }
         else if (hitSpin && IsTakingTurn && GameState.Instance.Spinner.spinFinished)
