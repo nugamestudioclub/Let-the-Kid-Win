@@ -24,7 +24,7 @@ public class Transporter : MonoBehaviour {
 
 	private readonly Path3 path = new();
 
-	public IReadOnlyPath3 Path => path;
+	public IReadOnlyPath<Vector3> Path => path;
 
 	private void Awake() {
 		path.AddRange(GetPoints());

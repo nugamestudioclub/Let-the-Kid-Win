@@ -120,18 +120,16 @@ public class Board : MonoBehaviour {
 	private IEnumerator NextSpace(int playerID) {
 		var currentSpace = spaces[playerPositions[playerID]];
 		var nextSpace = spaces[playerPositions[playerID] + 1];
-
-		yield return MovePieceBetweenPoints(playerID, currentSpace.transform.position, nextSpace.transform.position, moveTime);
+		var gamePiece = gamePieces[playerID];
+		yield return MoveBetween(gamePiece.transform, currentSpace.transform.position, nextSpace.transform.position, moveTime);
 		playerPositions[playerID]++;
 	}
 
-	private IEnumerator MovePieceBetweenPoints(int playerID, Vector2 startPoint, Vector2 endPoint, float moveTime) {
+	private IEnumerator MoveBetween(Transform transform, Vector2 startPoint, Vector2 endPoint, float moveTime) {
 		float adjustedMoveTime = 0;
 		float moveStep = moveTime / moveSteps;
-		var gamePiece = gamePieces[playerID];
 		for( float i = 0; i < (moveTime + moveStep); i += moveStep ) {
-			//take current position and 
-			gamePiece.transform.position = Vector2.Lerp(startPoint, endPoint, i / moveTime);
+			transform.position = Vector2.Lerp(startPoint, endPoint, i / moveTime);
 			adjustedMoveTime += moveStep;
 			if( adjustedMoveTime >= Time.fixedDeltaTime ) {
 				yield return new WaitForSeconds(Time.fixedDeltaTime);
@@ -158,34 +156,30 @@ public class Board : MonoBehaviour {
 		if( ladderIndex >= 0 ) {
 			var ladder = ladders[ladderIndex];
 			Debug.Log($"Player {playerID} is taking a ladder from {ladder.StartIndex} to {ladder.EndIndex}!");
-			yield return MoveThroughTransporter(playerID, ladder);
+			yield return MoveAlong(playerID, ladder.Path, ladder.TransportTime);
+			playerPositions[playerID] = ladder.EndIndex;
 		}
 		else if( snakeIndex >= 0 ) {
 			var snake = snakes[snakeIndex];
 			Debug.Log($"Player {playerID} is taking a snake from {snake.StartIndex} to {snake.EndIndex}!");
-			yield return MoveThroughTransporter(playerID, snake);
+			yield return MoveAlong(playerID, snake.Path, snake.TransportTime);
+			playerPositions[playerID] = snake.EndIndex;
 		}
-		GameState.Instance.NextState();
 	}
 
-	private IEnumerator MoveThroughTransporter(int playerID, Transporter transporter) {
-		Debug.Log($"Transporter length: {transporter.Path.Count}");
-		Debug.Log($"Total distance of snake: {transporter.Path.Length}");
-		for( int i = 0; i < transporter.Path.Count - 1; i++ ) {
-			float distanceToTravel = transporter.Path.GetDistanceBetween(i, i + 1);
-			float timeToMove = (distanceToTravel / transporter.Path.Length) * transporter.TransportTime;
+	private IEnumerator MoveAlong(int playerID, IReadOnlyPath<Vector3> path, float time) {
+		Debug.Log($"Transporter length: {path.Count}");
+		Debug.Log($"Total distance of snake: {path.Length}");
+		var gamePiece = gamePieces[playerID];
+		for( int i = 0; i < path.Count - 1; i++ ) {
+			float distanceToTravel = path.GetDistanceBetween(i, i + 1);
+			float timeToMove = (distanceToTravel / path.Length) * time;
 			/*
 			Debug.Log($"i={i} ({transporter.Path[i]}), i+1={i+1} ({transporter.Path[i+1]})");
 			Debug.Log($"distance={distanceToTravel}");
 			*/
-			yield return MovePieceBetweenPoints(
-				playerID,
-				transporter.Path[i],
-				transporter.Path[i + 1],
-				timeToMove
-			);
+			yield return MoveBetween(gamePiece.transform, path[i], path[i + 1], timeToMove);
 		}
-		playerPositions[playerID] = transporter.EndIndex;
 		yield return null;
 	}
 
