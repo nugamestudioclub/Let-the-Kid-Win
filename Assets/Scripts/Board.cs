@@ -11,10 +11,10 @@ public class Board : MonoBehaviour {
 	private bool debugMode;
 
 	[SerializeField]
-	private List<Transporter> snakes = new();
+	private List<Snake> snakes = new();
 
 	[SerializeField]
-	private List<Transporter> ladders = new();
+	private List<Ladder> ladders = new();
 
 	[SerializeField]
 	private List<PlayerController> gamePieces = new();
@@ -50,6 +50,8 @@ public class Board : MonoBehaviour {
 	void Start() {
 		for( int i = 0; i < snakes.Count; ++i )
 			ConnectSnake(i);
+		for( int i = 0; i < ladders.Count; ++i )
+			ConnectLadder(i);
 	}
 
 	void Update() {
@@ -71,9 +73,16 @@ public class Board : MonoBehaviour {
 
 	private void ConnectSnake(int index) {
 		var snake = snakes[index];
-		var start = GetWorldPosition(snake.StartIndex);
-		var end = GetWorldPosition(snake.EndIndex);
-		snake.ConnectPoints(start, end);
+		var startPoint = GetWorldPosition(snake.TransportationSettings.StartIndex);
+		var endPoint = GetWorldPosition(snake.TransportationSettings.EndIndex);
+		snake.ConnectPoints(startPoint, endPoint);
+	}
+
+	private void ConnectLadder(int index) {
+		var ladder = ladders[index];
+		var startPoint = GetWorldPosition(ladder.TransportationSettings.StartIndex);
+		var endPoint = GetWorldPosition(ladder.TransportationSettings.EndIndex);
+		ladder.ConnectPoints(startPoint, endPoint);
 	}
 
 	private int CellToIndex(int x, int y) {
@@ -137,11 +146,11 @@ public class Board : MonoBehaviour {
 	}
 
 	private int FindSnakeAt(int boardIndex) {
-		return snakes.FindIndex(s => s.StartIndex == boardIndex);
+		return snakes.FindIndex(s => s.TransportationSettings.StartIndex == boardIndex);
 	}
 
 	private int FindLadderAt(int boardIndex) {
-		return ladders.FindIndex(l => l.StartIndex == boardIndex);
+		return ladders.FindIndex(l => l.TransportationSettings.StartIndex == boardIndex);
 	}
 
 	private IEnumerator FinishMoving(int playerID, int boardIndex) {
@@ -153,15 +162,15 @@ public class Board : MonoBehaviour {
 
 		if( ladderIndex >= 0 ) {
 			var ladder = ladders[ladderIndex];
-			Debug.Log($"Player {playerID} is taking a ladder from {ladder.StartIndex} to {ladder.EndIndex}!");
-			yield return player.MoveAlong(ladder.Path, ladder.TransportTime, (int)moveSteps);
-			playerPositions[playerID] = ladder.EndIndex;
+			Debug.Log($"Player {playerID} is taking a ladder from {ladder.TransportationSettings.StartIndex} to {ladder.TransportationSettings.EndIndex}!");
+			yield return player.MoveAlong(ladder.Path, ladder.TransportationSettings.DurationInSeconds, (int)moveSteps);
+			playerPositions[playerID] = ladder.TransportationSettings.EndIndex;
 		}
 		else if( snakeIndex >= 0 ) {
 			var snake = snakes[snakeIndex];
-			Debug.Log($"Player {playerID} is taking a snake from {snake.StartIndex} to {snake.EndIndex}!");
-			yield return player.MoveAlong(snake.Path, snake.TransportTime, (int)moveSteps);
-			playerPositions[playerID] = snake.EndIndex;
+			Debug.Log($"Player {playerID} is taking a snake from {snake.TransportationSettings.StartIndex} to {snake.TransportationSettings.EndIndex}!");
+			yield return player.MoveAlong(snake.Path, snake.TransportationSettings.DurationInSeconds, (int)moveSteps);
+			playerPositions[playerID] = snake.TransportationSettings.EndIndex;
 		}
 	}
 
@@ -172,6 +181,8 @@ public class Board : MonoBehaviour {
 			DrawSpace(cell, index++);
 		for( int i = 0; i < snakes.Count; ++i )
 			DrawSnake(i);
+		for( int i = 0; i < ladders.Count; ++i )
+			DrawLadder(i);
 	}
 
 	[SerializeField]
@@ -203,15 +214,15 @@ public class Board : MonoBehaviour {
 	private Color gizmoSnakePrimaryColor = Color.white;
 
 	[SerializeField]
-	private Color gizmoSnakeSecondaryColor = Color.yellow;
+	private Color gizmoSnakeSecondaryColor = Color.green;
 
 	private void DrawSnake(int index) {
 		var oldColor = Gizmos.color;
 		Gizmos.color = gizmoSnakePrimaryColor;
 
 		var snake = snakes[index];
-		var start = GetWorldPosition(snake.StartIndex);
-		var end = GetWorldPosition(snake.EndIndex);
+		var start = GetWorldPosition(snake.TransportationSettings.StartIndex);
+		var end = GetWorldPosition(snake.TransportationSettings.EndIndex);
 
 		Gizmos.DrawWireSphere(start, gizmoSnakeScale / 2);
 		foreach( var transform in snake.PointTransforms )
@@ -224,6 +235,24 @@ public class Board : MonoBehaviour {
 		foreach( var point in snake.Path )
 			Gizmos.DrawWireSphere(point, gizmoSnakeScale);
 
+
+		Gizmos.color = oldColor;
+	}
+
+	[SerializeField]
+	private Color gizmoLadderColor = Color.yellow;
+
+	[SerializeField]
+	private float gizmoLadderScale = 0.25f;
+
+	private void DrawLadder(int index) {
+		var oldColor = Gizmos.color;
+		Gizmos.color = gizmoLadderColor;
+
+		var ladder = ladders[index];
+		ConnectLadder(index);
+		foreach( var point in ladder.Path )
+			Gizmos.DrawWireSphere(point, gizmoSnakeScale);
 
 		Gizmos.color = oldColor;
 	}

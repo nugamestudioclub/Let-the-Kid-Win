@@ -32,7 +32,8 @@ public class Path3 : IPath<Vector3> {
 
 	public void Add(Vector3 item) {
 		points.Add(item);
-		nextPointDistances[^1] = Vector3.Distance(points[^2], points[^1]);
+		if( Count > 1 )
+			nextPointDistances[^1] = Vector3.Distance(points[^2], points[^1]);
 		nextPointDistances.Add(0f);
 		length = CalcLength();
 	}

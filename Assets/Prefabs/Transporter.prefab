@@ -300,12 +300,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 316880dc68f2da54d8c64c6b6a82e5e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interpolation:
+  interpolationSettings:
     enabled: 1
     verticesPerSegment: 3
     samples: 3
-  <StartIndex>k__BackingField: 7
-  <EndIndex>k__BackingField: 5
+  <TransportationSettings>k__BackingField:
+    <StartIndex>k__BackingField: 7
+    <EndIndex>k__BackingField: 5
+    <DurationInSeconds>k__BackingField: 1
   pointTransforms:
   - {fileID: 8286006956846408028}
   - {fileID: 1019824910}
@@ -315,4 +317,3 @@ MonoBehaviour:
   - {fileID: 579975889}
   - {fileID: 1379757398}
   - {fileID: 8286006957916219084}
-  transportTime: 1.5

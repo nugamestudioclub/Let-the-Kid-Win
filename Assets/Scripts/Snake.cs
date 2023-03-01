@@ -4,28 +4,21 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-public class Transporter : MonoBehaviour {
+public class Snake : MonoBehaviour {
 	[SerializeField]
 	private InterpolationSettings interpolationSettings = InterpolationSettings.Default;
 
 	[field: SerializeField]
-	public int StartIndex { get; private set; }
-
-	[field: SerializeField]
-	public int EndIndex { get; private set; }
+	public TransportationSettings TransportationSettings { get; private set; }
 
 	[SerializeField]
 	private List<Transform> pointTransforms = new();
 	public IReadOnlyList<Transform> PointTransforms => pointTransforms;
 
-	[SerializeField]
-	private float transportTime;
-	public float TransportTime { get => transportTime; }
-
 	private readonly Path3 path = new();
 	public IReadOnlyPath<Vector3> Path => path;
 
-	private void Awake() {
+	void Awake() {
 		path.AddRange(GetPoints());
 	}
 	
