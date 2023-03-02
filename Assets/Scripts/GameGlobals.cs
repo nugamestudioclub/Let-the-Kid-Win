@@ -12,8 +12,6 @@ public class GameGlobals {
 
 	public int SpaceCount => spaceTypes.Count;
 
-	public int TurnCount => turns.Count - 1;
-
 	public int LastRoll { get; set; }
 
 	public GameGlobals() {
@@ -39,6 +37,13 @@ public class GameGlobals {
 		turns.Add(new TurnData[PlayerCount]);
 	}
 
+	public int CountTurns(Player player) {
+		int playerId = (int)player;
+		return turns.Count > 1 && turns[^1][playerId].IsEmpty
+			? turns.Count - 2
+			: turns.Count - 1;
+	}
+
 	public TurnData GetTurnData(int index, Player player) {
 		return turns[index][(int)player];
 	}
@@ -48,20 +53,24 @@ public class GameGlobals {
 	}
 
 	public TurnData GetCurrentTurnData(Player player) {
-		int playerId = (int)player;
-		return turns.Count > 1 && turns[^1][playerId].IsEmpty
-			? turns[^2][playerId]
-			: turns[^1][playerId];
+		return turns[(int)player][CountTurns(player)];
 	}
-	
+
 	public void SetCurrentTurnData(Player player, TurnData turnData) {
 		int playerId = (int)player;
 		turns[^1][playerId] = turnData;
 	}
 
+	public TurnData GetPreviousTurnData(Player player, int count = 1) {
+		int index = CountTurns(player);
+		return count < index
+			? turns[(int)player][index - count]
+			: new();
+	}
+
 	public IEnumerable<TurnData> GetAllTurnData(Player player) {
 		int index = 1;
-		while( index < TurnCount )
+		while( index < turns.Count - 1 )
 			yield return GetTurnData(index++, player);
 		var lastTurnData = GetTurnData(index, player);
 		if( !lastTurnData.IsEmpty )
@@ -76,5 +85,5 @@ public class GameGlobals {
 		return spaceTypes[index];
 	}
 
-	public IReadOnlyList<SpaceType> SpaceTypes => spaceTypes; 
+	public IReadOnlyList<SpaceType> SpaceTypes => spaceTypes;
 }
