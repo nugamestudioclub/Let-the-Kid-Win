@@ -14,6 +14,12 @@ public class GameGlobals {
 
 	public int TurnCount => turns.Count - 1;
 
+	public int LastRoll { get; set; }
+
+	public GameGlobals() {
+		Set(0, Enumerable.Empty<SpaceType>().ToList());
+	}
+
 	public GameGlobals(int players, IList<SpaceType> spaces) {
 		Set(players, spaces);
 	}
@@ -26,6 +32,7 @@ public class GameGlobals {
 	public void Set(int players, IList<SpaceType> spaceTypes) {
 		Clear();
 		turns.Add(new TurnData[players]);
+		this.spaceTypes.AddRange(spaceTypes);
 	}
 
 	public void AddTurn() {

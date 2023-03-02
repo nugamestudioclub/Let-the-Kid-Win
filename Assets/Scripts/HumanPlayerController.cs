@@ -11,16 +11,18 @@ public class HumanPlayerController : PlayerController {
 	private bool hitSpin = false;
 
 	protected override void DoUpdate() {
+		var gameState = GameState.Instance;
 		if( IsTakingTurn && Input.GetKeyDown(KeyCode.Space) ) {
 			hitSpin = true;
 			float power = Random.Range(0.2f, 1f);
-			GameState.Instance.Spinner.Spin(power);
+			gameState.Spinner.Spin(power);
 		}
 		else if( hitSpin && IsTakingTurn && GameState.Instance.Spinner.spinFinished ) {
 			IsTakingTurn = false;
 			hitSpin = false;
-			int spaces = GameState.Instance.Spinner.GetSegment();
-			GameState.Instance.Board.MovePlayer(PlayerID, spaces);
+			int spaces = gameState.Spinner.GetSegment();
+			gameState.Globals.LastRoll = spaces;
+			gameState.Board.MovePlayer(PlayerID, spaces);
 		}
 	}
 }

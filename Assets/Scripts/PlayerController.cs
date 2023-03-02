@@ -56,6 +56,8 @@ public abstract class PlayerController : MonoBehaviour, IPlayerController {
 
 	public void TakeTurn() {
 		DoTakeTurn();
+		var turnData = GameState.Instance.Globals.GetCurrentTurnData((Player)PlayerID);
+		Debug.Log($"child: roll {turnData.Roll} dst {turnData.Destination}");
 	}
 
 	protected abstract void DoTakeTurn();

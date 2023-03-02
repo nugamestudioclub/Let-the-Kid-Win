@@ -12,10 +12,12 @@ public class AIPlayerController : PlayerController {
 	}
 
 	protected override void DoUpdate() {
-		if( IsTakingTurn && GameState.Instance.Spinner.spinFinished ) {
+		var gameState = GameState.Instance;
+		if( IsTakingTurn && gameState.Spinner.spinFinished ) {
 			IsTakingTurn = false;
-			int spaces = GameState.Instance.Spinner.GetSegment();
-			GameState.Instance.Board.MovePlayer(PlayerID, spaces);
+			int spaces = gameState.Spinner.GetSegment();
+			gameState.Globals.LastRoll = spaces;
+			gameState.Board.MovePlayer(PlayerID, spaces);
 		}
 	}
 }

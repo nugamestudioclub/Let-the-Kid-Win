@@ -6,6 +6,9 @@ using UnityEngine.UIElements;
 public class GameState : MonoBehaviour {
 	public static GameState Instance;
 
+	private readonly GameGlobals globals = new();
+	public GameGlobals Globals => globals;
+
 	[SerializeField]
 	private State currentState;
 	public State CurrentState { get => currentState; }
@@ -24,11 +27,12 @@ public class GameState : MonoBehaviour {
 	private AIPlayerController child;
 
 	[SerializeField]
-	private HumanPlayerController grampa;
+	private HumanPlayerController grandpa;
 
 	void Awake() {
 		if( Instance == null ) {
 			Instance = this;
+			Initialize();
 			DontDestroyOnLoad(gameObject);
 
 		}
@@ -42,6 +46,10 @@ public class GameState : MonoBehaviour {
 			isfirstTime = false;
 			NextState();
 		}
+	}
+
+	private void Initialize() {
+		globals.Set(players: 2, board.GetSpaceTypes());
 	}
 
 	public enum State {
@@ -58,8 +66,7 @@ public class GameState : MonoBehaviour {
 		}
 		else {
 			currentState = State.PlayerTurn;
-			grampa.TakeTurn();
+			grandpa.TakeTurn();
 		}
 	}
-
 }
