@@ -62,7 +62,8 @@ public static class GameQuests {
 				return false;
 			else
 				return Enumerable.Range(0, globals.PlayerCount).Any(x =>
-					globals.GetCurrentTurnData((Player)x).Destination == space
+					x != playerId
+					&& globals.GetCurrentTurnData((Player)x).Destination == space
 				);
 		});
 	}
