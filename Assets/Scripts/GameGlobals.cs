@@ -40,13 +40,29 @@ public class GameGlobals {
 		turns[index][(int)player] = turnData;
 	}
 
+	public TurnData GetCurrentTurnData(Player player) {
+		int playerId = (int)player;
+		return turns.Count > 1 && turns[^1][playerId].IsEmpty
+			? turns[^2][playerId]
+			: turns[^1][playerId];
+	}
+	
+	public void SetCurrentTurnData(Player player, TurnData turnData) {
+		int playerId = (int)player;
+		turns[^1][playerId] = turnData;
+	}
+
 	public IEnumerable<TurnData> GetAllTurnData(Player player) {
 		int index = 1;
 		while( index < TurnCount )
 			yield return GetTurnData(index++, player);
 		var lastTurnData = GetTurnData(index, player);
-		if( lastTurnData.Roll != 0 )
+		if( !lastTurnData.IsEmpty )
 			yield return lastTurnData;
+	}
+
+	public int GetCurrentSpace(Player player) {
+		return GetCurrentTurnData(player).Destination;
 	}
 
 	public SpaceType GetTypeOfSpace(int index) {
