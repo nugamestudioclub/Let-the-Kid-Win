@@ -64,7 +64,7 @@ public class GameGlobals {
 	public TurnData GetPreviousTurnData(Player player, int count = 1) {
 		int index = CountTurns(player);
 		return count < index
-			? turns[(int)player][index - count]
+			? turns[index - count][(int)player]
 			: new();
 	}
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -135,6 +136,7 @@ public class Board : MonoBehaviour {
 		if( gamePieces[playerID] != null ) {
 			//run movement coroutine
 			Debug.Log($"Player {playerID} is moving {spaces} spaces");
+			spaces = Math.Min(spaces, (this.spaces.Count - 1) - playerPositions[playerID]);
 			StartCoroutine(GoMovePlayer(playerID, spaces));
 		}
 		else {
@@ -187,7 +189,16 @@ public class Board : MonoBehaviour {
 		if( playerID == 0 )
 			globals.AddTurn();
 		globals.SetCurrentTurnData((Player)playerID, new(globals.LastRoll, playerPositions[playerID]));
-        GameState.Instance.NextState();
+
+		Quest gameOver = GameQuests.LandOnSpace((Player)playerID, spaces.Count - 1);
+
+        if (gameOver.IsComplete(globals))
+		{
+			TransitionManager.ToCredits();
+		} else
+		{
+            GameState.Instance.NextState();
+        }
     }
 
 #if UNITY_EDITOR
