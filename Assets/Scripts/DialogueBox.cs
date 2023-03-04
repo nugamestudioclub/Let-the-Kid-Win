@@ -5,25 +5,43 @@ using UnityEngine.UI;
 
 public class DialogueBox : MonoBehaviour
 {
-    Image image;
+    Image textboxImage;
     TMPro.TextMeshProUGUI textMesh;
+    Image portraitImage;
 
     [SerializeField]
-    Sprite childSprite;
+    Sprite[] childTextboxSprites;
     [SerializeField]
-    Sprite grandpaSprite;
+    Sprite[] grandpaTextboxSprites;
+    [SerializeField]
+    Sprite[] childPortraitSprites;
+    [SerializeField]
+    Sprite[] grandpaPortraitSprites;
+
+    private Player _talkingPlayer;
 
     // Start is called before the first frame update
     void Start()
     {
-        image = GetComponentInChildren<Image>();
-        textMesh = GetComponentInChildren<TMPro.TextMeshProUGUI>();
+        textboxImage = transform.GetChild(0).GetComponent<Image>();
+        textMesh = transform.GetChild(1).GetComponent<TMPro.TextMeshProUGUI>();
+        portraitImage = transform.GetChild(2).GetComponent<Image>();
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    /// <summary>
+    /// Sets all dialogue box attributes
+    /// </summary>
+    public void SetDialogue(Dialogue d)
+    {
+        SetTextbox(d.player);
+        SetText(d.text);
+        SetExpression(d.player, d.expression);
     }
 
     /// <summary>
@@ -38,18 +56,41 @@ public class DialogueBox : MonoBehaviour
     /// <summary>
     /// Sets the graphic of the text box
     /// </summary>
-    public void SetTextBox(Player player)
+    public void SetTextbox(Player player)
     {
         Wake();
+        _talkingPlayer = player;
         switch(player)
         {
             case Player.Child:
-                image.overrideSprite = childSprite;
+                textboxImage.overrideSprite = childTextboxSprites[1];
                 break;
             case Player.Grandpa:
-                image.overrideSprite = grandpaSprite;
+                textboxImage.overrideSprite = grandpaTextboxSprites[1];
                 break;
         }
+    }
+
+    /// <summary>
+    /// Sets the graphic of the portrait
+    /// </summary>
+    public void SetExpression(Player p, Expression e)
+    {
+        Wake();
+        switch(p)
+        {
+            case Player.Child:
+                portraitImage.overrideSprite = childPortraitSprites[(int) e];
+                break;
+            case Player.Grandpa:
+                portraitImage.overrideSprite = grandpaPortraitSprites[((int) e)];
+                break;
+        }
+    }
+
+    public void SetExpression(Expression e)
+    {
+        SetExpression(_talkingPlayer, e);
     }
 
     /// <summary>
@@ -57,8 +98,9 @@ public class DialogueBox : MonoBehaviour
     /// </summary>
     public void Clear()
     {
-        image.enabled = false;
+        textboxImage.enabled = false;
         textMesh.enabled = false;
+        portraitImage.enabled = false;
     }
 
     /// <summary>
@@ -66,7 +108,8 @@ public class DialogueBox : MonoBehaviour
     /// </summary>
     void Wake()
     {
-        image.enabled = true;
+        textboxImage.enabled = true;
         textMesh.enabled = true;
+        portraitImage.enabled = true;
     }
 }
