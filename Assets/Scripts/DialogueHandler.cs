@@ -18,7 +18,9 @@ public class DialogueHandler : MonoBehaviour
     {
         dialogueBox = dialogueBoxObject.GetComponent<DialogueBox>();
         // Testing
-        
+        // SetDialogue(new Dialogue("Testing...", Player.Child, Expression.Sad));
+        // SetDialogue(new Dialogue("Normal Expression?", Player.Child));
+        // ClearDialogue();
     }
 
     // Update is called once per frame
@@ -27,28 +29,25 @@ public class DialogueHandler : MonoBehaviour
         
     }
 
-    public void SetDialogue(string s, Player player)
+    public void SetDialogue(Dialogue d)
     {
-        dialogue = new Dialogue(s, player);
-        dialogueBox.SetTextBox(dialogue.player);
-        dialogueBox.SetText(dialogue.text);
-
+        dialogue = d;
+        dialogueBox.SetDialogue(d);
     }
 
-    void ClearDialogue()
+    public void SetDialogue(string s, Player player, Expression e)
+    {
+        SetDialogue(new Dialogue(s, player, e));
+    }
+
+    public void SetDialogue(string s, Player player)
+    {
+        SetDialogue(new Dialogue(s, player));
+    }
+
+    public void ClearDialogue()
     {
         dialogueBox.Clear();
     }
 
-    class Dialogue
-    {
-        public string text { get; private set; }
-        public Player player { get; private set; }
-
-        public Dialogue(string text, Player player)
-        {
-            this.text = text;
-            this.player = player;
-        }
-    }
 }
