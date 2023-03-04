@@ -8,3 +8,14 @@ public enum SpaceType {
 	Snake,
 	Ladder,
 }
+
+public enum Expression
+{
+	Normal, 
+	Happy, 
+	Sad, 
+	Laugh, 
+	Win, 
+	Lose, 
+	HitSnake
+}
