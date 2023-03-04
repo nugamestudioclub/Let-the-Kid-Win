@@ -66,6 +66,8 @@ public class Board : MonoBehaviour {
 			return;
 		for( int i = 1; i <= 6; ++i )
 			if( Input.GetKeyDown(KeyCode.Alpha0 + i) ) {
+				var globals = GameState.Instance.Globals;
+				globals.LastRoll = i;
 				MovePlayer(playerID, i);
 				break;
 			}
@@ -108,6 +110,15 @@ public class Board : MonoBehaviour {
 			else
 				for( int col = dimensions.x - 1; col >= 0; --col )
 					yield return new(col, row, 0);
+	}
+
+	public IList<SpaceType> GetSpaceTypes() {
+		var spaceTypes = Enumerable.Repeat(SpaceType.None, dimensions.x * dimensions.y).ToList();
+		foreach( var snake in snakes )
+			spaceTypes[snake.TransportationSettings.StartIndex] = SpaceType.Snake;
+		foreach( var ladder in ladders )
+			spaceTypes[ladder.TransportationSettings.StartIndex] = SpaceType.Ladder;
+		return spaceTypes;
 	}
 
 	private List<BoardSpace> CreateAllSpaces() {
@@ -172,6 +183,11 @@ public class Board : MonoBehaviour {
 			yield return player.MoveAlong(snake.Path, snake.TransportationSettings.DurationInSeconds, (int)moveSteps);
 			playerPositions[playerID] = snake.TransportationSettings.EndIndex;
 		}
+		var globals = GameState.Instance.Globals;
+		if( playerID == 0 )
+			globals.AddTurn();
+		globals.SetCurrentTurnData((Player)playerID, new(globals.LastRoll, playerPositions[playerID]));
+
 	}
 
 #if UNITY_EDITOR
