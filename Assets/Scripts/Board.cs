@@ -187,8 +187,8 @@ public class Board : MonoBehaviour {
 		if( playerID == 0 )
 			globals.AddTurn();
 		globals.SetCurrentTurnData((Player)playerID, new(globals.LastRoll, playerPositions[playerID]));
-
-	}
+        GameState.Instance.NextState();
+    }
 
 #if UNITY_EDITOR
 	private void OnDrawGizmos() {

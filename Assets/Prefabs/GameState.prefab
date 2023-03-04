@@ -50,7 +50,7 @@ MonoBehaviour:
   spinner: {fileID: 0}
   board: {fileID: 0}
   child: {fileID: 7492412064832622995}
-  grampa: {fileID: 1081497040298939493}
+  grandpa: {fileID: 1081497040298939493}
 --- !u!1001 &6338297567090962748
 PrefabInstance:
   m_ObjectHideFlags: 0

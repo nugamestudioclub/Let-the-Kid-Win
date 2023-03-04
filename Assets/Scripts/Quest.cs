@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Quest
 {
-
     private readonly Func<GameGlobals, bool> IsCompleteCallback;
 
     public Quest(Func<GameGlobals, bool> IsCompleteCallback)
