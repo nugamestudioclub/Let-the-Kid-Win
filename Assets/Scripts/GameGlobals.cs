@@ -53,7 +53,7 @@ public class GameGlobals {
 	}
 
 	public TurnData GetCurrentTurnData(Player player) {
-		return turns[(int)player][CountTurns(player)];
+		return turns[CountTurns(player)][(int)player];
 	}
 
 	public void SetCurrentTurnData(Player player, TurnData turnData) {
