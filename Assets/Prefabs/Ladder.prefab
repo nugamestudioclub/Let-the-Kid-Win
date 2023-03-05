@@ -49,3 +49,4 @@ MonoBehaviour:
     <EndIndex>k__BackingField: 17
     <DurationInSeconds>k__BackingField: 1.5
   steps: 5
+  offset: {x: 0, y: 0}
