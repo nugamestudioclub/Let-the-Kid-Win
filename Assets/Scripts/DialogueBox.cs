@@ -10,6 +10,12 @@ public class DialogueBox : MonoBehaviour
     Image portraitImage;
 
     [SerializeField]
+    private float _timeBetweenChars = 0.06f;
+    private float _charTimer = 0.0f;
+
+    private string _fullString;
+
+    [SerializeField]
     Sprite[] childTextboxSprites;
     [SerializeField]
     Sprite[] grandpaTextboxSprites;
@@ -31,7 +37,16 @@ public class DialogueBox : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        string textboxText = textMesh.text;
+        if(!textMesh.text.Equals(_fullString))
+        {
+            _charTimer += Time.deltaTime;
+            if (_charTimer >= _timeBetweenChars)
+            {
+                _charTimer = 0.0f;
+                textMesh.text = _fullString.Substring(0, textboxText.Length + 1);
+            }
+        }  
     }
 
     /// <summary>
@@ -50,7 +65,8 @@ public class DialogueBox : MonoBehaviour
     public void SetText(string s)
     {
         Wake();
-        textMesh.text = s;
+        _fullString = s;
+        textMesh.text = "";
     }
 
     /// <summary>
