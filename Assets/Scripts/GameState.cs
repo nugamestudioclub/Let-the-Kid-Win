@@ -56,7 +56,7 @@ public class GameState : MonoBehaviour {
 	}
 
 	private void Initialize() {
-		globals.Set(players: 2, board.GetSpaceTypes());
+		globals.Set(players: 2, board.GetSpaceTypes(), board.LongestSnakeIndex);
 	}
 
 	public enum State {

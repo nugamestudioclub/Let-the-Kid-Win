@@ -163,9 +163,10 @@ MonoBehaviour:
   moveTime: 0.5
   moveSteps: 100
   spaces: []
+  spacePrefab: {fileID: 5861513320241456383, guid: 0dbd0a4ae2fe0cb449a5615c7f2f2ba7, type: 3}
   grid: {fileID: 529876682769341069}
   dimensions: {x: 7, y: 7}
-  spacePrefab: {fileID: 5861513320241456383, guid: 0dbd0a4ae2fe0cb449a5615c7f2f2ba7, type: 3}
+  <LongestSnakeIndex>k__BackingField: 47
   gizmoSpaceColor: {r: 1, g: 1, b: 1, a: 1}
   gizmoSnakeScale: 0.25
   gizmoSnakePrimaryColor: {r: 1, g: 1, b: 1, a: 1}

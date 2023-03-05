@@ -20,7 +20,7 @@ public class Board : MonoBehaviour {
 	[SerializeField]
 	private List<PlayerController> gamePieces = new();
 
-	private List<int> playerPositions = new();
+	private readonly List<int> playerPositions = new();
 
 	[SerializeField]
 	private float moveTime =.5f;
@@ -31,13 +31,18 @@ public class Board : MonoBehaviour {
 	private List<BoardSpace> spaces;
 
 	[SerializeField]
+	private BoardSpace spacePrefab;
+
+	[SerializeField]
 	private Grid grid;
 
 	[SerializeField]
 	private Vector2Int dimensions;
 
-	[SerializeField]
-	private BoardSpace spacePrefab;
+	public int Size => dimensions.x * dimensions.y;
+
+	[field: SerializeField]
+	public int LongestSnakeIndex { get; private set; } = -1;
 
 	void Awake() {
 		spaces = CreateAllSpaces();

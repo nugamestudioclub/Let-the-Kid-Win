@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using UnityEngine;
 public class GameGlobals {
-	private List<SpaceType> spaceTypes = new();
+	private readonly List<SpaceType> spaceTypes = new();
 
 	private readonly List<TurnData[]> turns = new();
 
@@ -14,23 +14,27 @@ public class GameGlobals {
 
 	public int LastRoll { get; set; }
 
+	public QuestBoard QuestBoard { get; private set; }
+
 	public GameGlobals() {
-		Set(0, Enumerable.Empty<SpaceType>().ToList());
+		Set(0, Enumerable.Empty<SpaceType>().ToList(), -1);
 	}
 
-	public GameGlobals(int players, IList<SpaceType> spaces) {
-		Set(players, spaces);
+	public GameGlobals(int players, IList<SpaceType> spaces, int longestSnakeIndex) {
+		Set(players, spaces, longestSnakeIndex);
 	}
 
 	public void Clear() {
 		spaceTypes.Clear();
 		turns.Clear();
+		QuestBoard = new(numberOfPlayers: 0, boardSize: 0, longestSnakeIndex: -1);
 	}
 
-	public void Set(int players, IList<SpaceType> spaceTypes) {
+	public void Set(int players, IList<SpaceType> spaceTypes, int longestSnakeIndex) {
 		Clear();
 		turns.Add(new TurnData[players]);
 		this.spaceTypes.AddRange(spaceTypes);
+		QuestBoard = new(players, spaceTypes.Count, longestSnakeIndex);
 	}
 
 	public void AddTurn() {

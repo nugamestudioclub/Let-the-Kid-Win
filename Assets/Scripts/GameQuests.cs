@@ -2,12 +2,16 @@
 using System.Linq;
 
 public static class GameQuests {
+	public static readonly Quest True = new(globals => true);
+
+	public static readonly Quest False = new(globals => false);
+
 	public static Quest LandOnAll(Player player, SpaceType spaceType) {
 		return new(globals => GetVisits(globals, player, spaceType).All(x => x > 0));
 	}
 
 	public static Quest LandOnSame(Player player, SpaceType spaceType, int count) {
-		return new(globals => GetVisits(globals, player, spaceType).Any(x => x >= count));
+		return new(globals => GetVisits(globals, player, spaceType).Any(x => x == count));
 	}
 
 	public static Quest LandOnN(Player player, SpaceType spaceType, int count) {
@@ -23,8 +27,8 @@ public static class GameQuests {
 	}
 
 	public static Quest Destination(Player player, int index) {
-		return new (globals => {
-				var currentTurn = globals.GetCurrentTurnData(player);
+		return new(globals => {
+			var currentTurn = globals.GetCurrentTurnData(player);
 			return currentTurn.Destination == index;
 		});
 	}
@@ -75,8 +79,15 @@ public static class GameQuests {
 		});
 	}
 
-	public static Quest GetAhead(Player aheadPlayer, Player behindPlayer, int count = 1) {
-		return new(globals => globals.GetCurrentSpace(aheadPlayer) >= globals.GetCurrentSpace(behindPlayer) + count);
+	public static Quest GetAhead(Player player, int count = 1) {
+		return new(globals => {
+			int playerId = (int)player;
+			var currentSpaces = Enumerable.Range(0, globals.PlayerCount).Select(x => globals.GetCurrentSpace((Player)x)).ToList();
+			for( int i = 0; i < currentSpaces.Count; ++i )
+				if( currentSpaces[playerId] - count >= currentSpaces[i] )
+					return true;
+			return false;
+		});
 	}
 
 	private static IReadOnlyList<int> GetVisits(GameGlobals globals, Player player, SpaceType spaceType) {
