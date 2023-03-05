@@ -24,13 +24,13 @@ public class AIPlayerController : PlayerController {
 				if (gameState.ChargePower.GetCharge() > power)
                 {
 					isCharging = false;
+					gameState.ChargePower.ResetCharge();
 					GameState.Instance.Spinner.Spin(power);
 				}
             }
 			else if (gameState.Spinner.spinFinished)
             {
 				IsTakingTurn = false;
-				gameState.ChargePower.ResetCharge();
 				int spaces = gameState.Spinner.GetSegment();
 				gameState.Globals.LastRoll = spaces;
 				gameState.Board.MovePlayer(PlayerID, spaces);

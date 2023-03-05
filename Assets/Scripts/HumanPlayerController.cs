@@ -25,12 +25,12 @@ public class HumanPlayerController : PlayerController {
 				hitSpin = false;
 				spinning = true;
 				gameState.Spinner.Spin(gameState.ChargePower.GetScaledCharge(0.2f));
-            }
+				gameState.ChargePower.ResetCharge();
+			}
 			else if (spinning && gameState.Spinner.spinFinished)
             {
 				IsTakingTurn = false;
 				spinning = false;
-				gameState.ChargePower.ResetCharge();
 				int spaces = gameState.Spinner.GetSegment();
 				gameState.Globals.LastRoll = spaces;
 				gameState.Board.MovePlayer(PlayerID, spaces);

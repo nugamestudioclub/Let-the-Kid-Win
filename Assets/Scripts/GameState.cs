@@ -33,6 +33,9 @@ public class GameState : MonoBehaviour {
 	[SerializeField]
 	private HumanPlayerController grandpa;
 
+	[field: SerializeField]
+	public AudioPlayer AudioPlayer { get; private set; }
+
 	void Awake() {
 		if( Instance == null ) {
 			Instance = this;

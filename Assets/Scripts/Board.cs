@@ -147,6 +147,7 @@ public class Board : MonoBehaviour {
 	private IEnumerator GoMovePlayer(int playerID, int spaces) {
 		for( int i = 0; i < spaces; i++ ) {
 			yield return NextSpace(playerID);
+			GameState.Instance.AudioPlayer.MovePiece();
 		}
 		yield return FinishMoving(playerID, playerPositions[playerID]);
 	}
