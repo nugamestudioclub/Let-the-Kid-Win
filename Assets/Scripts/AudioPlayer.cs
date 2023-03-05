@@ -16,21 +16,39 @@ public class AudioPlayer : MonoBehaviour {
 	[SerializeField]
 	private AudioClip[] pieceMoves;
 
+	[SerializeField]
+	private AudioClip snake;
+
+	[SerializeField]
+	private AudioClip[] ladderSteps;
+
 	private int continuousIndex = 1;
 
-	private bool spinning;
+	private float currentTime;
 
-	private float currentSpinTime;
+	private bool spinning;
 
 	[SerializeField]
 	private float timeBetweenSpins;
 
+	private bool climbingLadder;
+
+	[SerializeField]
+	private float timeBetweenLadderSteps;
+
 	void Update() {
 		if( spinning ) {
-			currentSpinTime += Time.deltaTime;
-			if( currentSpinTime >= timeBetweenSpins ) {
+			currentTime += Time.deltaTime;
+			if( currentTime >= timeBetweenSpins ) {
 				PlaySpin();
-				currentSpinTime = 0f;
+				currentTime = 0f;
+			}
+		}
+		else if( climbingLadder ) {
+			currentTime += Time.deltaTime;
+			if( currentTime >= timeBetweenLadderSteps ) {
+				PlayLadderStep();
+				currentTime = 0f;
 			}
 		}
 	}
@@ -46,6 +64,7 @@ public class AudioPlayer : MonoBehaviour {
 	public void StartSpinner() {
 		PlayFireAndForget(spinnerStart);
 		spinning = true;
+		currentTime = 0f;
 		StartCoroutine(PlayFirstSpin());
 		PlaySpin();
 	}
@@ -71,6 +90,26 @@ public class AudioPlayer : MonoBehaviour {
 			return;
 		var audioClip = PickFromSoundset(pieceMoves);
 		PlayFireAndForget(audioClip);
+	}
+
+	public void PlaySnake() {
+		PlayFireAndForget(snake);
+	}
+
+	public void PlayLadder() {
+		climbingLadder = true;
+		currentTime = 0f;
+	}
+
+	public void PlayLadderStep() {
+		if( !CheckSoundset(ladderSteps, nameof(ladderSteps)) )
+			return;
+		var audioClip = PickFromSoundset(ladderSteps);
+		PlayContinuous(audioClip);
+	}
+
+	public void StopLadder() {
+		climbingLadder = false;
 	}
 
 	private void PlayFireAndForget(AudioClip audioClip) {

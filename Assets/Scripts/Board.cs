@@ -190,18 +190,23 @@ public class Board : MonoBehaviour {
 		int ladderIndex = FindLadderAt(boardIndex);
 		int snakeIndex = FindSnakeAt(boardIndex);
 		var player = gamePieces[playerID];
+		var audioPlayer = GameState.Instance.AudioPlayer;
 
 		if( ladderIndex >= 0 ) {
 			var ladder = ladders[ladderIndex];
 			Debug.Log($"Player {playerID} is taking a ladder from {ladder.TransportationSettings.StartIndex} to {ladder.TransportationSettings.EndIndex}!");
+			audioPlayer.PlayLadder();
 			yield return player.MoveAlong(ladder.Path, ladder.TransportationSettings.DurationInSeconds, (int)moveSteps);
 			playerPositions[playerID] = ladder.TransportationSettings.EndIndex;
+			audioPlayer.StopLadder();
 		}
 		else if( snakeIndex >= 0 ) {
 			var snake = snakes[snakeIndex];
 			Debug.Log($"Player {playerID} is taking a snake from {snake.TransportationSettings.StartIndex} to {snake.TransportationSettings.EndIndex}!");
+			audioPlayer.PlaySnake();
 			yield return player.MoveAlong(snake.Path, snake.TransportationSettings.DurationInSeconds, (int)moveSteps);
 			playerPositions[playerID] = snake.TransportationSettings.EndIndex;
+			audioPlayer.MovePiece();
 		}
 		var globals = GameState.Instance.Globals;
 		if( playerID == 0 )

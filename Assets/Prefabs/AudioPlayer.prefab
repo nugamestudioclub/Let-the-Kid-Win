@@ -193,7 +193,16 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b0736801c73797547979d6a7c7b8f7cf, type: 3}
   - {fileID: 8300000, guid: 951c393736d2ebb42836709736a8f73c, type: 3}
   - {fileID: 8300000, guid: 255cf57d5615f0e41b3e2d86cb43b963, type: 3}
+  snake: {fileID: 8300000, guid: 2db4aec3eb65e2f49ad6382c8b698e1e, type: 3}
+  ladder: {fileID: 8300000, guid: 5a9db9c939dc2694ead3fdc9136b04c8, type: 3}
+  ladderSteps:
+  - {fileID: 8300000, guid: 067862b9b29d799448c0880779174654, type: 3}
+  - {fileID: 8300000, guid: 408c40781f3567a42b4f9a2b580506ea, type: 3}
+  - {fileID: 8300000, guid: ebdae2c513610f84c8c4b3cdbc668e12, type: 3}
+  - {fileID: 8300000, guid: 2162587f8521ee04c81bd54ac9c458e4, type: 3}
+  - {fileID: 8300000, guid: 23f29ab0c587fcc48a454844849631e0, type: 3}
   timeBetweenSpins: 0.325
+  timeBetweenLadderSteps: 0.325
 --- !u!1 &3628901311177999574
 GameObject:
   m_ObjectHideFlags: 0
