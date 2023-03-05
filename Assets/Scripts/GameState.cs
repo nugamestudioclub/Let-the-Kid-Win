@@ -20,6 +20,10 @@ public class GameState : MonoBehaviour {
 	public Spinner Spinner => spinner;
 
 	[SerializeField]
+	private ChargePower chargePower;
+	public ChargePower ChargePower => chargePower;
+
+	[SerializeField]
 	private Board board;
 	public Board Board => board;
 

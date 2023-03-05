@@ -142,7 +142,14 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 6db830049c240f549a5c850f1f495e18, type: 3}
   - {fileID: 21300000, guid: 3e55c149e993c2b40a2637a1199c6ac7, type: 3}
   - {fileID: 21300000, guid: 11397913ee69afc4384687b21dcae81d, type: 3}
-  grandpaPortraitSprites: []
+  grandpaPortraitSprites:
+  - {fileID: 21300000, guid: f8f36cacedb2d6d458b2040e646c0309, type: 3}
+  - {fileID: 21300000, guid: 5816336f6756f1e40acf00c74e841bb0, type: 3}
+  - {fileID: 21300000, guid: 1f7fffbb17fb98d4abc59eca4dfd7fcc, type: 3}
+  - {fileID: 21300000, guid: 5816336f6756f1e40acf00c74e841bb0, type: 3}
+  - {fileID: 21300000, guid: b4c804fa39d85534b8439d3fbe56e483, type: 3}
+  - {fileID: 21300000, guid: 222b96d031e60a04289b1017f661923d, type: 3}
+  - {fileID: 21300000, guid: 470e3fcce7da97a40984ecb1cc72fab7, type: 3}
 --- !u!1 &5401599592230647320
 GameObject:
   m_ObjectHideFlags: 0

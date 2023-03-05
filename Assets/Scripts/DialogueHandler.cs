@@ -10,6 +10,7 @@ public class DialogueHandler : MonoBehaviour
     GameObject dialogueBoxObject;
     DialogueBox dialogueBox;
 
+    Dictionary<string, Dialogue> dialogueDict = new DialogueDictionary();
 
     Dialogue dialogue;
 
@@ -27,6 +28,11 @@ public class DialogueHandler : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void SetDialogueFromKey(string key)
+    {
+        SetDialogue(dialogueDict[key]);
     }
 
     public void SetDialogue(Dialogue d)
@@ -51,3 +57,4 @@ public class DialogueHandler : MonoBehaviour
     }
 
 }
+
