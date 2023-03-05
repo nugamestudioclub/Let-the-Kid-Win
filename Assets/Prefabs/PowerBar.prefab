@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3029270541965354827}
   - component: {fileID: 1167222401508527118}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Outline
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87,9 +87,8 @@ GameObject:
   - component: {fileID: 5098527949057832595}
   - component: {fileID: 5098527949057832592}
   - component: {fileID: 5098527949057832593}
-  - component: {fileID: 5098527949057832594}
   m_Layer: 5
-  m_Name: Image
+  m_Name: Content
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153,20 +152,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5098527949057832594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5098527949057832596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70b6fb0962234fd45b992ef8fafe15d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fillObject: {fileID: 5098527949057832596}
-  _speed: 1
 --- !u!1 &6739007940716742225
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,6 +161,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8127907792169176350}
+  - component: {fileID: 8919356097030358680}
   m_Layer: 5
   m_Name: PowerBar
   m_TagString: Untagged
@@ -205,3 +191,17 @@ RectTransform:
   m_AnchoredPosition: {x: -243.40002, y: -140.2}
   m_SizeDelta: {x: 32, y: 102}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &8919356097030358680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6739007940716742225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70b6fb0962234fd45b992ef8fafe15d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fillObject: {fileID: 5098527949057832596}
+  _speed: 1

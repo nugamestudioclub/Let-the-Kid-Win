@@ -20,6 +20,7 @@ public class ChargePower : MonoBehaviour
     void Start()
     {
         image = fillObject.GetComponent<Image>();
+        ResetCharge();
     }
 
     // Update is called once per frame
@@ -37,6 +38,11 @@ public class ChargePower : MonoBehaviour
     public float GetCharge()
     {
         return charge;
+    }
+
+    public float GetScaledCharge(float floor)
+    {
+        return floor + (1.0f - floor) * charge;
     }
 
     public void Tick()
