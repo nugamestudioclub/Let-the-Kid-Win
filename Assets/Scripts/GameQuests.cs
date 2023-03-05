@@ -22,6 +22,13 @@ public static class GameQuests {
 		});
 	}
 
+	public static Quest Destination(Player player, int index) {
+		return new (globals => {
+				var currentTurn = globals.GetCurrentTurnData(player);
+			return currentTurn.Destination == index;
+		});
+	}
+
 	public static Quest RollInRange(Player player, int min, int max, int count) {
 		return new(globals => {
 			var turnData = globals.GetAllTurnData(player).ToList();

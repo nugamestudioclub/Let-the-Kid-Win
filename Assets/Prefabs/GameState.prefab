@@ -257,6 +257,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Board
       objectReference: {fileID: 0}
+    - target: {fileID: 529876684113100779, guid: 5fe51675bcd28e04c991cea17088e5ba, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fe51675bcd28e04c991cea17088e5ba, type: 3}
 --- !u!114 &923190870036325661 stripped

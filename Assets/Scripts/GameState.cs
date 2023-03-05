@@ -33,8 +33,6 @@ public class GameState : MonoBehaviour {
 		if( Instance == null ) {
 			Instance = this;
 			Initialize();
-			DontDestroyOnLoad(gameObject);
-
 		}
 		else {
 			Destroy(gameObject);

@@ -190,7 +190,7 @@ public class Board : MonoBehaviour {
 			globals.AddTurn();
 		globals.SetCurrentTurnData((Player)playerID, new(globals.LastRoll, playerPositions[playerID]));
 
-		Quest gameOver = GameQuests.LandOnSpace((Player)playerID, spaces.Count - 1);
+		Quest gameOver = GameQuests.Destination((Player)playerID, spaces.Count - 1);
 
         if (gameOver.IsComplete(globals))
 		{

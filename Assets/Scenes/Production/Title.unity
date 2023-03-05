@@ -130,6 +130,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4328270966991818302, guid: 723c4b1363936bc4f969c44113377160, type: 3}
+      propertyPath: m_text
+      value: "Let the \nKid Win!"
+      objectReference: {fileID: 0}
+    - target: {fileID: 4328270966991818302, guid: 723c4b1363936bc4f969c44113377160, type: 3}
+      propertyPath: m_fontSize
+      value: 205.45
+      objectReference: {fileID: 0}
     - target: {fileID: 4328270967168802124, guid: 723c4b1363936bc4f969c44113377160, type: 3}
       propertyPath: m_Name
       value: TitleScreen
