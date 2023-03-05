@@ -22,8 +22,21 @@ public class ChargePower : MonoBehaviour {
 		ResetCharge();
 	}
 
-	public void ResetCharge() {
-		SetCharge(0.0f);
+    private void Update()
+    {
+        if (!charging)
+        {
+			if (image.fillAmount > 0.0f)
+			{
+				image.fillAmount -= _speed * Time.deltaTime;
+			}
+			else image.fillAmount = 0;
+        }
+    }
+
+    public void ResetCharge() {
+		// SetCharge(0.0f);
+		charge = 0;
 		fillState = FillState.Ascending;
 		charging = false;
 		GameState.Instance.AudioPlayer.StopPowerCharge();
