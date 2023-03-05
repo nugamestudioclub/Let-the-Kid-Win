@@ -279,7 +279,7 @@ public class Board : MonoBehaviour {
 		var ladder = ladders[index];
 		ConnectLadder(index);
 		foreach( var point in ladder.Path )
-			Gizmos.DrawWireSphere(point, gizmoSnakeScale);
+			Gizmos.DrawWireSphere(point, gizmoLadderScale);
 
 		Gizmos.color = oldColor;
 	}
