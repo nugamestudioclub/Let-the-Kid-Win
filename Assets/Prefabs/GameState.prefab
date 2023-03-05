@@ -55,6 +55,7 @@ MonoBehaviour:
   child: {fileID: 7492412064832622995}
   grandpa: {fileID: 1081497040298939493}
   aiWaitTime: 2
+  clearDlgWaitTime: 5
   <AudioPlayer>k__BackingField: {fileID: 1034573233908654425}
 --- !u!1001 &6338297567090962748
 PrefabInstance:

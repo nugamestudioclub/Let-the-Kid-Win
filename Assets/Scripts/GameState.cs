@@ -36,6 +36,9 @@ public class GameState : MonoBehaviour {
 	[SerializeField]
 	private float aiWaitTime;
 
+	[SerializeField]
+	private float clearDlgWaitTime;
+
 	[field: SerializeField]
 	public AudioPlayer AudioPlayer { get; private set; }
 
@@ -90,5 +93,11 @@ public class GameState : MonoBehaviour {
 			grandpa.TakeTurn();
 			break;
 		}
+		StartCoroutine(ClearDialogue(clearDlgWaitTime - aiWaitTime));
+	}
+
+	private IEnumerator ClearDialogue(float seconds) {
+		yield return new WaitForSeconds(seconds);
+		DialogueHandler.Instance.ClearDialogue();
 	}
 }

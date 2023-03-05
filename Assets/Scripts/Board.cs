@@ -237,6 +237,7 @@ public class Board : MonoBehaviour {
 			dlg.SetDialogueFromKey(player, nameof(QuestBoard.Win));
 		}
 		else {
+
 			EvaluateDestinationQuests(player);
 			GameState.Instance.NextState();
 		}
