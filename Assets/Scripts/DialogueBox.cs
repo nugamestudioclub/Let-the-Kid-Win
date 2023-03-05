@@ -13,7 +13,7 @@ public class DialogueBox : MonoBehaviour
     private float _timeBetweenChars = 0.06f;
     private float _charTimer = 0.0f;
 
-    private string _fullString;
+    private string _fullString = "";
 
     [SerializeField]
     Sprite[] childTextboxSprites;
@@ -38,7 +38,7 @@ public class DialogueBox : MonoBehaviour
     void Update()
     {
         string textboxText = textMesh.text;
-        if(!textMesh.text.Equals(_fullString))
+        if(textboxText.Length < _fullString.Length)
         {
             _charTimer += Time.deltaTime;
             if (_charTimer >= _timeBetweenChars)

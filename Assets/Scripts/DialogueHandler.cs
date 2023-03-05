@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 
@@ -10,29 +11,31 @@ public class DialogueHandler : MonoBehaviour
     GameObject dialogueBoxObject;
     DialogueBox dialogueBox;
 
-    Dictionary<string, Dialogue> dialogueDict = new DialogueDictionary();
-
     Dialogue dialogue;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         dialogueBox = dialogueBoxObject.GetComponent<DialogueBox>();
         // Testing
         // SetDialogue(new Dialogue("Testing...", Player.Child, Expression.Sad));
         // SetDialogue(new Dialogue("Normal Expression?", Player.Child));
         // ClearDialogue();
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public static DialogueHandler Instance;
 
     public void SetDialogueFromKey(string key)
     {
-        SetDialogue(dialogueDict[key]);
+        SetDialogue(DialogueLines.GetDialogue(key));
     }
 
     public void SetDialogue(Dialogue d)

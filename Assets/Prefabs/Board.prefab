@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 344f3c755c1989c4299fed191d441456, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  debugMode: 0
+  debugMode: 1
   snakes:
   - {fileID: 4388393005896154424}
   - {fileID: 683797162750195388}
@@ -244,7 +244,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 4d295797c231e3c4bbe208138acca8a9, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -266,7 +266,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6323105459894466507}
   m_Layer: 0
-  m_Name: Snake
+  m_Name: Snakes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -351,7 +351,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1600199446469033579, guid: e6a6f7b1a35c74442af799ef0c1b0748, type: 3}
       propertyPath: steps
-      value: 5
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1600199446469033579, guid: e6a6f7b1a35c74442af799ef0c1b0748, type: 3}
+      propertyPath: offset.x
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1600199446469033579, guid: e6a6f7b1a35c74442af799ef0c1b0748, type: 3}
       propertyPath: <TransportationSettings>k__BackingField.<EndIndex>k__BackingField
@@ -461,6 +465,10 @@ PrefabInstance:
     - target: {fileID: 8286006958151309753, guid: 6fe248bd3ab77174585b4781ee567554, type: 3}
       propertyPath: <TransportationSettings>k__BackingField.<StartIndex>k__BackingField
       value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8286006958151309753, guid: 6fe248bd3ab77174585b4781ee567554, type: 3}
+      propertyPath: <TransportationSettings>k__BackingField.<DurationInSeconds>k__BackingField
+      value: 1.125
       objectReference: {fileID: 0}
     - target: {fileID: 8286006958151309754, guid: 6fe248bd3ab77174585b4781ee567554, type: 3}
       propertyPath: m_RootOrder
@@ -607,6 +615,10 @@ PrefabInstance:
       propertyPath: <TransportationSettings>k__BackingField.<StartIndex>k__BackingField
       value: 47
       objectReference: {fileID: 0}
+    - target: {fileID: 8286006958151309753, guid: 6fe248bd3ab77174585b4781ee567554, type: 3}
+      propertyPath: <TransportationSettings>k__BackingField.<DurationInSeconds>k__BackingField
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8286006958151309754, guid: 6fe248bd3ab77174585b4781ee567554, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -752,6 +764,10 @@ PrefabInstance:
       propertyPath: <TransportationSettings>k__BackingField.<StartIndex>k__BackingField
       value: 41
       objectReference: {fileID: 0}
+    - target: {fileID: 8286006958151309753, guid: 6fe248bd3ab77174585b4781ee567554, type: 3}
+      propertyPath: <TransportationSettings>k__BackingField.<DurationInSeconds>k__BackingField
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8286006958151309754, guid: 6fe248bd3ab77174585b4781ee567554, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -877,6 +893,10 @@ PrefabInstance:
       propertyPath: <TransportationSettings>k__BackingField.<StartIndex>k__BackingField
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 1600199446469033579, guid: e6a6f7b1a35c74442af799ef0c1b0748, type: 3}
+      propertyPath: <TransportationSettings>k__BackingField.<DurationInSeconds>k__BackingField
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6a6f7b1a35c74442af799ef0c1b0748, type: 3}
 --- !u!4 &849335613022225253 stripped
@@ -957,6 +977,10 @@ PrefabInstance:
     - target: {fileID: 1600199446469033579, guid: e6a6f7b1a35c74442af799ef0c1b0748, type: 3}
       propertyPath: <TransportationSettings>k__BackingField.<StartIndex>k__BackingField
       value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1600199446469033579, guid: e6a6f7b1a35c74442af799ef0c1b0748, type: 3}
+      propertyPath: <TransportationSettings>k__BackingField.<DurationInSeconds>k__BackingField
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6a6f7b1a35c74442af799ef0c1b0748, type: 3}
@@ -1193,6 +1217,10 @@ PrefabInstance:
     - target: {fileID: 8286006958151309753, guid: 6fe248bd3ab77174585b4781ee567554, type: 3}
       propertyPath: <TransportationSettings>k__BackingField.<StartIndex>k__BackingField
       value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 8286006958151309753, guid: 6fe248bd3ab77174585b4781ee567554, type: 3}
+      propertyPath: <TransportationSettings>k__BackingField.<DurationInSeconds>k__BackingField
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 8286006958151309754, guid: 6fe248bd3ab77174585b4781ee567554, type: 3}
       propertyPath: m_RootOrder
@@ -1710,6 +1738,10 @@ PrefabInstance:
     - target: {fileID: 8286006958151309753, guid: 6fe248bd3ab77174585b4781ee567554, type: 3}
       propertyPath: <TransportationSettings>k__BackingField.<StartIndex>k__BackingField
       value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 8286006958151309753, guid: 6fe248bd3ab77174585b4781ee567554, type: 3}
+      propertyPath: <TransportationSettings>k__BackingField.<DurationInSeconds>k__BackingField
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 8286006958151309754, guid: 6fe248bd3ab77174585b4781ee567554, type: 3}
       propertyPath: m_RootOrder

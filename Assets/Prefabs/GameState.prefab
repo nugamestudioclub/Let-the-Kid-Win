@@ -281,10 +281,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3856996967831408763}
     m_Modifications:
-    - target: {fileID: 529876683054896821, guid: 5fe51675bcd28e04c991cea17088e5ba, type: 3}
-      propertyPath: debugMode
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 529876683054896822, guid: 5fe51675bcd28e04c991cea17088e5ba, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -332,10 +328,6 @@ PrefabInstance:
     - target: {fileID: 529876683054896823, guid: 5fe51675bcd28e04c991cea17088e5ba, type: 3}
       propertyPath: m_Name
       value: Board
-      objectReference: {fileID: 0}
-    - target: {fileID: 529876684113100779, guid: 5fe51675bcd28e04c991cea17088e5ba, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5fe51675bcd28e04c991cea17088e5ba, type: 3}

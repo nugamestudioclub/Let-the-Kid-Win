@@ -481,18 +481,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 968818550256766754, guid: e45d1550c7a713e48adcbc6f2df1c4fa, type: 3}
-      propertyPath: <TransportationSettings>k__BackingField.<DurationInSeconds>k__BackingField
-      value: 1.125
-      objectReference: {fileID: 0}
-    - target: {fileID: 2167362908161827239, guid: e45d1550c7a713e48adcbc6f2df1c4fa, type: 3}
-      propertyPath: <TransportationSettings>k__BackingField.<DurationInSeconds>k__BackingField
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2240414499931833220, guid: e45d1550c7a713e48adcbc6f2df1c4fa, type: 3}
-      propertyPath: <TransportationSettings>k__BackingField.<DurationInSeconds>k__BackingField
-      value: 2.5
-      objectReference: {fileID: 0}
     - target: {fileID: 3856996967831408763, guid: e45d1550c7a713e48adcbc6f2df1c4fa, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -544,34 +532,6 @@ PrefabInstance:
     - target: {fileID: 4673977880478510030, guid: e45d1550c7a713e48adcbc6f2df1c4fa, type: 3}
       propertyPath: m_Name
       value: GameState
-      objectReference: {fileID: 0}
-    - target: {fileID: 4728505680013277037, guid: e45d1550c7a713e48adcbc6f2df1c4fa, type: 3}
-      propertyPath: <TransportationSettings>k__BackingField.<DurationInSeconds>k__BackingField
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5223632744092981464, guid: e45d1550c7a713e48adcbc6f2df1c4fa, type: 3}
-      propertyPath: <TransportationSettings>k__BackingField.<DurationInSeconds>k__BackingField
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6021957801023993399, guid: e45d1550c7a713e48adcbc6f2df1c4fa, type: 3}
-      propertyPath: m_Name
-      value: Snakes
-      objectReference: {fileID: 0}
-    - target: {fileID: 7471877958229239212, guid: e45d1550c7a713e48adcbc6f2df1c4fa, type: 3}
-      propertyPath: steps
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 7471877958229239212, guid: e45d1550c7a713e48adcbc6f2df1c4fa, type: 3}
-      propertyPath: offset.x
-      value: 0.15
-      objectReference: {fileID: 0}
-    - target: {fileID: 9004308236693651612, guid: e45d1550c7a713e48adcbc6f2df1c4fa, type: 3}
-      propertyPath: <TransportationSettings>k__BackingField.<DurationInSeconds>k__BackingField
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 9097725872082629958, guid: e45d1550c7a713e48adcbc6f2df1c4fa, type: 3}
-      propertyPath: <TransportationSettings>k__BackingField.<DurationInSeconds>k__BackingField
-      value: 1.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e45d1550c7a713e48adcbc6f2df1c4fa, type: 3}
