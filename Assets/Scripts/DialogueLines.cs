@@ -8,14 +8,64 @@ public static class DialogueLines
         lines = new()
         {
             { "c_Default", new (
-                text: "My name is Child.",
+                text: "Don't take it easy on me, Grampa.",
                 player: Player.Child,
                 expression: Expression.Normal  )
             },
             { "g_Default", new (
-                text: "My name is Grandpa.",
+                text: "Let's have good game!",
                 player: Player.Grandpa,
                 expression: Expression.Normal  )
+            },
+            { "c_roll1", new (
+                text: "Go go go!",
+                player: Player.Child,
+                expression: Expression.Normal  )
+            },
+            { "c_roll2", new (
+                text: "Look at how fast I am!",
+                player: Player.Child,
+                expression: Expression.Normal  )
+            },
+            { "c_roll3", new (
+                text: "My turn, my turn!",
+                player: Player.Child,
+                expression: Expression.Happy  )
+            },
+            { "c_roll4", new (
+                text: "Your turn, kiddo.",
+                player: Player.Grandpa,
+                expression: Expression.Normal  )
+            },
+            { "c_roll5", new (
+                text: "Good luck!",
+                player: Player.Grandpa,
+                expression: Expression.Normal  )
+            },
+            { "g_roll1", new (
+                text: "Wish me luck!",
+                player: Player.Grandpa,
+                expression: Expression.Normal  )
+            },
+            { "g_roll2", new (
+                text: "Good luck, Grampa!",
+                player: Player.Child,
+                expression: Expression.Normal  )
+            },
+            { "g_roll3", new (
+                text: "I hope a snake doesn't bite me.",
+                player: Player.Grandpa,
+                expression: Expression.Normal  )
+            },
+            { "g_roll4", new (
+                text: "Watch out for snakes!",
+                player: Player.Child,
+                expression: Expression.Normal  )
+            },
+            { "g_roll5", new (
+                text: "1, 2, 3, goooo!",
+                player: Player.Child,
+                expression: Expression.Happy  )
             },
             { $"g_{nameof(QuestBoard.LandOnEverySnake)}", new (
                 text: "How did you manage to step on every snake?! Hahaha!",
