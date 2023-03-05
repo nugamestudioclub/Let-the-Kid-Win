@@ -22,6 +22,7 @@ public static class GameQuests {
 		return new(globals => {
 			var previousTurn = globals.GetPreviousTurnData(player);
 			var currentTurn = globals.GetCurrentTurnData(player);
+			UnityEngine.Debug.Log($"prev dst {previousTurn.Destination}, roll {currentTurn.Roll}, index {index}");
 			return previousTurn.Destination + currentTurn.Roll == index;
 		});
 	}

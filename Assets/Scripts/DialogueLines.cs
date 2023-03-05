@@ -83,7 +83,7 @@ public static class DialogueLines
                 expression: Expression.Sad  )
             },
             { $"c_{nameof(QuestBoard.GetAhead)}", new (
-                text: "Are you even trying, Grandpa?",
+                text: "Are you even trying, Grampa?",
                 player: Player.Child,
                 expression: Expression.Normal  )
             },
@@ -103,7 +103,7 @@ public static class DialogueLines
                 expression: Expression.Lose  )
             },
             { $"c_{nameof(QuestBoard.Win)}", new (
-                text: "Again, again, let's play again, Granpa",
+                text: "Again, again, let's play again, Grampa",
                 player: Player.Child,
                 expression: Expression.Win  )
             },

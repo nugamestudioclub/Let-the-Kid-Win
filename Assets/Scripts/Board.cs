@@ -3,9 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Board : MonoBehaviour {
 	[SerializeField]
@@ -43,17 +41,26 @@ public class Board : MonoBehaviour {
 
 	[field: SerializeField]
 	public int LongestSnakeIndex { get; private set; } = -1;
+	
+	private int startIndex = 41;
 
 	void Awake() {
 		spaces = CreateAllSpaces();
 		//initialize starting positions)
 		foreach( var piece in gamePieces ) {
-			playerPositions.Add(0);
-			piece.transform.position = spaces[0].transform.position;
+			playerPositions.Add(startIndex);
+			piece.transform.position = spaces[startIndex].transform.position;
 		}
 	}
 
 	void Start() {
+		var globals = GameState.Instance.Globals;
+		for( int i = 0; i < playerPositions.Count; ++i ) {
+			var player = (Player)i;
+			globals.SetCurrentTurnData(player, new(roll: 0, startIndex));
+			var currentTurn = globals.GetCurrentTurnData(player);
+			// Debug.Log($"roll {currentTurn.Roll}, dst {currentTurn.Destination}");
+		}
 		for( int i = 0; i < snakes.Count; ++i )
 			ConnectSnake(i);
 		for( int i = 0; i < ladders.Count; ++i )
@@ -194,14 +201,18 @@ public class Board : MonoBehaviour {
 		// if space ended moving on is a shoot or ladder
 		int ladderIndex = FindLadderAt(boardIndex);
 		int snakeIndex = FindSnakeAt(boardIndex);
-		var player = gamePieces[playerID];
+		var playerController = gamePieces[playerID];
+		var player = (Player)playerID;
 		var audioPlayer = GameState.Instance.AudioPlayer;
+		var globals = GameState.Instance.Globals;
+		var questBoard = globals.QuestBoard;
+		var dlg = DialogueHandler.Instance;
 
 		if( ladderIndex >= 0 ) {
 			var ladder = ladders[ladderIndex];
 			Debug.Log($"Player {playerID} is taking a ladder from {ladder.TransportationSettings.StartIndex} to {ladder.TransportationSettings.EndIndex}!");
 			audioPlayer.PlayLadder();
-			yield return player.MoveAlong(ladder.Path, ladder.TransportationSettings.DurationInSeconds, (int)moveSteps);
+			yield return playerController.MoveAlong(ladder.Path, ladder.TransportationSettings.DurationInSeconds, (int)moveSteps);
 			playerPositions[playerID] = ladder.TransportationSettings.EndIndex;
 			audioPlayer.StopLadder();
 		}
@@ -209,19 +220,27 @@ public class Board : MonoBehaviour {
 			var snake = snakes[snakeIndex];
 			Debug.Log($"Player {playerID} is taking a snake from {snake.TransportationSettings.StartIndex} to {snake.TransportationSettings.EndIndex}!");
 			audioPlayer.PlaySnake();
-			yield return player.MoveAlong(snake.Path, snake.TransportationSettings.DurationInSeconds, (int)moveSteps);
+			yield return playerController.MoveAlong(snake.Path, snake.TransportationSettings.DurationInSeconds, (int)moveSteps);
 			playerPositions[playerID] = snake.TransportationSettings.EndIndex;
 			audioPlayer.MovePiece();
 		}
-		var globals = GameState.Instance.Globals;
 		if( playerID == 0 )
 			globals.AddTurn();
-		globals.SetCurrentTurnData((Player)playerID, new(globals.LastRoll, playerPositions[playerID]));
+		globals.SetCurrentTurnData(player, new(globals.LastRoll, playerPositions[playerID]));
 
-		Quest gameOver = GameQuests.Destination((Player)playerID, spaces.Count - 1);
+		var turnData = GameState.Instance.Globals.GetCurrentTurnData((Player)playerID);
+		Debug.Log($"player {playerID} roll {turnData.Roll} dst {turnData.Destination}");
 
-		if( gameOver.IsComplete(globals) ) {
-			TransitionManager.ToCredits();
+
+		if( questBoard.LandOnLongestSnake[playerID].Evaluate(globals) ) {
+			// Debug.Log($"player {playerID} landed on the longest snake!");
+			dlg.SetDialogueFromKey(player, nameof(QuestBoard.LandOnLongestSnake));
+		}
+
+
+		if( questBoard.Win[playerID].Evaluate(globals) ) {
+			// TransitionManager.ToCredits();
+			dlg.SetDialogueFromKey(player, nameof(QuestBoard.Win));
 		}
 		else {
 			GameState.Instance.NextState();
