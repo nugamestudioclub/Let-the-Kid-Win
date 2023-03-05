@@ -44,3 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 263fce57f6929074e81e0d4e2f510f29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interpolationSettings:
+    enabled: 1
+    verticesPerSegment: 3
+    samples: 3
+  <TransportationSettings>k__BackingField:
+    <StartIndex>k__BackingField: 0
+    <EndIndex>k__BackingField: 0
+    <DurationInSeconds>k__BackingField: 0
+  offset: {x: 0.5, y: 0.5}

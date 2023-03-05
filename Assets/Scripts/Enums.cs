@@ -9,13 +9,20 @@ public enum SpaceType {
 	Ladder,
 }
 
-public enum Expression
-{
-	Normal, 
-	Happy, 
-	Sad, 
-	Laugh, 
-	Win, 
-	Lose, 
+public enum Expression {
+	Normal,
+	Happy,
+	Sad,
+	Laugh,
+	Win,
+	Lose,
 	HitSnake
+}
+
+public enum Direction {
+	None,
+	Up,
+	Right,
+	Down,
+	Left
 }

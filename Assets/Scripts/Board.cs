@@ -41,7 +41,7 @@ public class Board : MonoBehaviour {
 
 	void Awake() {
 		spaces = CreateAllSpaces();
-		//initialize starting positions
+		//initialize starting positions)
 		foreach( var piece in gamePieces ) {
 			playerPositions.Add(0);
 			piece.transform.position = spaces[0].transform.position;
@@ -123,7 +123,24 @@ public class Board : MonoBehaviour {
 	}
 
 	private List<BoardSpace> CreateAllSpaces() {
-		return GetCellPositions().Select(cell => CreateSpace(cell.x, cell.y)).ToList();
+		var spaces = GetCellPositions().Select(cell => CreateSpace(cell.x, cell.y)).ToList();
+		for( int i = 0; i < spaces.Count - 1; ++i )
+			spaces[i].Connect(spaces[i + 1].transform.position, GetSpaceOffsetDirection(i));
+		return spaces;
+	}
+
+	private Direction GetSpaceOffsetDirection(int index) {
+		var cell = IndexToCell(index);
+		bool isEvenRow = cell.y % 2 == 0;
+		bool isLeftColumn = cell.x == 0;
+		bool isRightColumn = cell.x == dimensions.x - 1;
+
+		if( isRightColumn && isEvenRow )
+			return Direction.Right;
+		else if( isLeftColumn && !isEvenRow )
+			return Direction.Left;
+		else
+			return Direction.Up;
 	}
 
 	private BoardSpace CreateSpace(int x, int y) {
@@ -153,9 +170,9 @@ public class Board : MonoBehaviour {
 	}
 
 	private IEnumerator NextSpace(int playerID) {
-		var nextSpace = spaces[playerPositions[playerID] + 1];
+		var currentSpace = spaces[playerPositions[playerID]];
 		var gamePiece = gamePieces[playerID];
-		yield return gamePiece.MoveTo(nextSpace.transform.position, moveTime, (int)moveSteps);
+		yield return gamePiece.MoveAlong(currentSpace.Path, moveTime, (int)moveSteps);
 		playerPositions[playerID]++;
 	}
 
@@ -172,7 +189,7 @@ public class Board : MonoBehaviour {
 		// if space ended moving on is a shoot or ladder
 		int ladderIndex = FindLadderAt(boardIndex);
 		int snakeIndex = FindSnakeAt(boardIndex);
-		var player = gamePieces[playerID]; 
+		var player = gamePieces[playerID];
 
 		if( ladderIndex >= 0 ) {
 			var ladder = ladders[ladderIndex];
@@ -193,14 +210,13 @@ public class Board : MonoBehaviour {
 
 		Quest gameOver = GameQuests.Destination((Player)playerID, spaces.Count - 1);
 
-        if (gameOver.IsComplete(globals))
-		{
+		if( gameOver.IsComplete(globals) ) {
 			TransitionManager.ToCredits();
-		} else
-		{
-            GameState.Instance.NextState();
-        }
-    }
+		}
+		else {
+			GameState.Instance.NextState();
+		}
+	}
 
 #if UNITY_EDITOR
 	private void OnDrawGizmos() {
