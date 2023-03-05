@@ -4,6 +4,9 @@ public class QuestBoard {
 	private readonly List<Entry> landOnEverySnake;
 	public IReadOnlyList<Entry> LandOnEverySnake => landOnEverySnake;
 
+	private readonly List<Entry> landOn3Snakes;
+	public IReadOnlyList<Entry> LandOn3Snakes => landOn3Snakes;
+
 	private readonly List<Entry> landOnSameSnake3Times;
 	public IReadOnlyList<Entry> LandOnSameSnake3Times => landOnSameSnake3Times;
 
@@ -31,6 +34,7 @@ public class QuestBoard {
 	public QuestBoard(int numberOfPlayers, int boardSize, int longestSnakeIndex) {
 		win = new(numberOfPlayers);
 		landOnEverySnake = new(numberOfPlayers);
+		landOn3Snakes = new(numberOfPlayers);
 		landOnSameSnake3Times = new(numberOfPlayers);
 		landOnLadderThenSnake = new(numberOfPlayers);
 		roll1AndLandOnSnake = new(numberOfPlayers);
@@ -42,6 +46,7 @@ public class QuestBoard {
 		for( int i = 0; i < numberOfPlayers; ++i ) {
 			var player = (Player)i;
 			landOnEverySnake.Add(new(GameQuests.LandOnAll(player, SpaceType.Snake)));
+			landOn3Snakes.Add(new(GameQuests.LandOnN(player, SpaceType.Snake, count: 3)));
 			landOnSameSnake3Times.Add(new(GameQuests.LandOnSame(player, SpaceType.Snake, count: 3)));
 			landOnLadderThenSnake.Add(new(GameQuests.LandOnBoth(player, SpaceType.Ladder, SpaceType.Snake), maxTimesCompleted: int.MaxValue));
 			roll1AndLandOnSnake.Add(new(GameQuests.RollAndLandOn(player, roll: 1, SpaceType.Snake), maxTimesCompleted: int.MaxValue));

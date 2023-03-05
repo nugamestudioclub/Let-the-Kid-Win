@@ -41,8 +41,9 @@ public class Board : MonoBehaviour {
 
 	[field: SerializeField]
 	public int LongestSnakeIndex { get; private set; } = -1;
-	
-	private int startIndex = 41;
+
+	[SerializeField]
+	private int startIndex = 0;
 
 	void Awake() {
 		spaces = CreateAllSpaces();
@@ -231,20 +232,39 @@ public class Board : MonoBehaviour {
 		var turnData = GameState.Instance.Globals.GetCurrentTurnData((Player)playerID);
 		Debug.Log($"player {playerID} roll {turnData.Roll} dst {turnData.Destination}");
 
-
-		if( questBoard.LandOnLongestSnake[playerID].Evaluate(globals) ) {
-			// Debug.Log($"player {playerID} landed on the longest snake!");
-			dlg.SetDialogueFromKey(player, nameof(QuestBoard.LandOnLongestSnake));
-		}
-
-
 		if( questBoard.Win[playerID].Evaluate(globals) ) {
 			// TransitionManager.ToCredits();
 			dlg.SetDialogueFromKey(player, nameof(QuestBoard.Win));
 		}
 		else {
+			EvaluateDestinationQuests(player);
 			GameState.Instance.NextState();
 		}
+	}
+
+	private void EvaluateDestinationQuests(Player player) {
+		var globals = GameState.Instance.Globals;
+		var questBoard = globals.QuestBoard;
+		var dlg = DialogueHandler.Instance;
+		int playerId = (int)player;
+		if( questBoard.LandOnLongestSnake[playerId].Evaluate(globals) )
+			dlg.SetDialogueFromKey(player, nameof(QuestBoard.LandOnLongestSnake));
+		else if( questBoard.LandOnEverySnake[playerId].Evaluate(globals) )
+			dlg.SetDialogueFromKey(player, nameof(QuestBoard.LandOnEverySnake));
+		else if( questBoard.LandOnSameSnake3Times[playerId].Evaluate(globals) )
+			dlg.SetDialogueFromKey(player, nameof(QuestBoard.LandOnSameSnake3Times));
+		else if( questBoard.LandOnLadderThenSnake[playerId].Evaluate(globals) )
+			dlg.SetDialogueFromKey(player, nameof(QuestBoard.LandOnLadderThenSnake));
+		else if( questBoard.Roll1AndLandOnSnake[playerId].Evaluate(globals) )
+			dlg.SetDialogueFromKey(player, nameof(QuestBoard.Roll1AndLandOnSnake));
+		else if( questBoard.MeetAnotherPlayer[playerId].Evaluate(globals) )
+			dlg.SetDialogueFromKey(player, nameof(QuestBoard.MeetAnotherPlayer));
+		else if( questBoard.RollHigh3Times[playerId].Evaluate(globals) )
+			dlg.SetDialogueFromKey(player, nameof(QuestBoard.RollHigh3Times));
+		else if( questBoard.GetAhead[playerId].Evaluate(globals) )
+			dlg.SetDialogueFromKey(player, nameof(QuestBoard.GetAhead));
+		else if( questBoard.LandOn3Snakes[playerId].Evaluate(globals) )
+			dlg.SetDialogueFromKey(player, nameof(QuestBoard.LandOn3Snakes));
 	}
 
 #if UNITY_EDITOR
