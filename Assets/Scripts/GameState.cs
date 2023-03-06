@@ -56,7 +56,7 @@ public class GameState : MonoBehaviour {
 		if( isfirstTime ) {
 			isfirstTime = false;
 			DialogueHandler.Instance.SetDialogueFromKey(
-				$"g_{nameof(GameQuests.LandOnBoth)}_ladder,snake");
+				$"c_Default");
 			NextState();
 		}
 	}
