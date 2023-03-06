@@ -34,7 +34,7 @@ public class GameState : MonoBehaviour {
 	private HumanPlayerController grandpa;
 
 	[SerializeField]
-	private float aiWaitTime;
+	private float startTurnWaitTime;
 
 	[SerializeField]
 	private float clearDlgWaitTime;
@@ -83,16 +83,16 @@ public class GameState : MonoBehaviour {
 	}
 
 	private IEnumerator BeginTurn(Player player) {
+		yield return new WaitForSeconds(startTurnWaitTime);
 		switch( player) {
 		case Player.Child:
-			yield return new WaitForSeconds(aiWaitTime);
 			child.TakeTurn();
 			break;
 		case Player.Grandpa:
 			grandpa.TakeTurn();
 			break;
 		}
-		StartCoroutine(ClearDialogue(clearDlgWaitTime - aiWaitTime));
+		StartCoroutine(ClearDialogue(clearDlgWaitTime - startTurnWaitTime));
 	}
 
 	private IEnumerator ClearDialogue(float seconds) {
