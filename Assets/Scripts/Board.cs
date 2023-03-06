@@ -233,11 +233,11 @@ public class Board : MonoBehaviour {
 		Debug.Log($"player {playerID} roll {turnData.Roll} dst {turnData.Destination}");
 
 		if( questBoard.Win[playerID].Evaluate(globals) ) {
-			// TransitionManager.ToCredits();
 			dlg.SetDialogueFromKey(player, nameof(QuestBoard.Win));
+			yield return new WaitForSeconds(4f);
+			TransitionManager.ToCredits();
 		}
 		else {
-
 			EvaluateDestinationQuests(player);
 			GameState.Instance.NextState();
 		}

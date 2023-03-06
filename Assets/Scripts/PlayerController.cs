@@ -55,6 +55,8 @@ public abstract class PlayerController : MonoBehaviour, IPlayerController {
 	}
 
 	public void TakeTurn() {
+		int pick = Random.Range(1, 5);
+		DialogueHandler.Instance.SetDialogueFromKey((Player)PlayerID, $"roll{pick}");
 		DoTakeTurn();
 	}
 
