@@ -67,9 +67,10 @@ public class GameGlobals {
 
 	public TurnData GetPreviousTurnData(Player player, int count = 1) {
 		int index = CountTurns(player);
+		int playerId = (int)player;
 		return count < index
-			? turns[index - count][(int)player]
-			: new();
+			? turns[index - count][playerId]
+			: turns[0][playerId];
 	}
 
 	public IEnumerable<TurnData> GetAllTurnData(Player player) {

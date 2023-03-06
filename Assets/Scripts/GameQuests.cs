@@ -15,7 +15,7 @@ public static class GameQuests {
 	}
 
 	public static Quest LandOnN(Player player, SpaceType spaceType, int count) {
-		return new(globals => GetVisits(globals, player, spaceType).Count(x => x > 0) >= count);
+		return new(globals => GetVisits(globals, player, spaceType).Count(x => x > 0) == count);
 	}
 
 	public static Quest LandOnSpace(Player player, int index) {
@@ -37,7 +37,7 @@ public static class GameQuests {
 		return new(globals => {
 			var turnData = globals.GetAllTurnData(player).ToList();
 			return Enumerable.Range(1, count).All(x => {
-				int roll = turnData[^x].Roll;
+				int roll = globals.GetPreviousTurnData(player, x).Roll;
 				return min <= roll && max <= roll;
 			});
 		});
@@ -66,15 +66,15 @@ public static class GameQuests {
 		return new(globals => {
 			var previousTurnData = globals.GetPreviousTurnData(player);
 			var currentTurnData = globals.GetCurrentTurnData(player);
-			int space = previousTurnData.Destination + currentTurnData.Roll;
-			var spaceType = globals.GetTypeOfSpace(space);
+			var spaceType = globals.GetTypeOfSpace(previousTurnData.Destination + currentTurnData.Roll);
+			int dst = currentTurnData.Destination;
 			int playerId = (int)player;
 			if( spaceType == SpaceType.None )
 				return false;
 			else
 				return Enumerable.Range(0, globals.PlayerCount).Any(x =>
 					x != playerId
-					&& globals.GetCurrentTurnData((Player)x).Destination == space
+					&& globals.GetCurrentTurnData((Player)x).Destination == dst
 				);
 		});
 	}

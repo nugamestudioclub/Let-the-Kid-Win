@@ -33,6 +33,12 @@ public class GameState : MonoBehaviour {
 	[SerializeField]
 	private HumanPlayerController grandpa;
 
+	[SerializeField]
+	private float aiWaitTime;
+
+	[SerializeField]
+	private float clearDlgWaitTime;
+
 	[field: SerializeField]
 	public AudioPlayer AudioPlayer { get; private set; }
 
@@ -69,11 +75,29 @@ public class GameState : MonoBehaviour {
 	public void NextState() {
 		if( currentState == State.PlayerTurn ) {
 			currentState = State.AITurn;
-			child.TakeTurn();
+			StartCoroutine(BeginTurn(Player.Child));
 		}
 		else {
 			currentState = State.PlayerTurn;
-			grandpa.TakeTurn();
+			StartCoroutine(BeginTurn(Player.Grandpa));
 		}
+	}
+
+	private IEnumerator BeginTurn(Player player) {
+		switch( player) {
+		case Player.Child:
+			yield return new WaitForSeconds(aiWaitTime);
+			child.TakeTurn();
+			break;
+		case Player.Grandpa:
+			grandpa.TakeTurn();
+			break;
+		}
+		StartCoroutine(ClearDialogue(clearDlgWaitTime - aiWaitTime));
+	}
+
+	private IEnumerator ClearDialogue(float seconds) {
+		yield return new WaitForSeconds(seconds);
+		DialogueHandler.Instance.ClearDialogue();
 	}
 }
