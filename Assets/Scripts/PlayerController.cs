@@ -40,12 +40,13 @@ public abstract class PlayerController : MonoBehaviour, IPlayerController {
 		float currentTime = 0f;
 		float adjutedTime = 0f;
 		float deltaTime = durationInSeconds / steps;
+		float epsilon = Time.fixedDeltaTime;
 		IsMoving = true;
 		while( currentTime < durationInSeconds + deltaTime ) {
 			transform.position = Vector2.Lerp(startPosition, endPosition, currentTime / durationInSeconds);
 			adjutedTime += deltaTime;
-			if( adjutedTime >= Time.fixedDeltaTime ) {
-				yield return new WaitForSeconds(Time.fixedDeltaTime);
+			if( adjutedTime >= epsilon ) {
+				yield return new WaitForFixedUpdate();
 				adjutedTime = 0f;
 			}
 			currentTime += deltaTime;

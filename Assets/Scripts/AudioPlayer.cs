@@ -154,7 +154,7 @@ public class AudioPlayer : MonoBehaviour {
 			return true;
 		}
 		else {
-			Debug.Log($"{nameof(AudioClip)} is null! No audio to play...");
+			// Debug.Log($"{nameof(AudioClip)} is null! No audio to play...");
 			return false;
 		}
 	}
@@ -164,7 +164,7 @@ public class AudioPlayer : MonoBehaviour {
 			return true;
 		}
 		else {
-			Debug.Log($"{nameof(AudioSource)}s are not serialized!");
+			// Debug.Log($"{nameof(AudioSource)}s are not serialized!");
 			return false;
 		}
 	}
@@ -174,7 +174,7 @@ public class AudioPlayer : MonoBehaviour {
 			return true;
 		}
 		else {
-			Debug.Log($"{nameof(AudioClip)}s not serialized! (Soundset '{name}')");
+			// Debug.Log($"{nameof(AudioClip)}s not serialized! (Soundset '{name}')");
 			return false;
 		}
 	}

@@ -161,12 +161,12 @@ public class Board : MonoBehaviour {
 	public void MovePlayer(int playerID, int spaces) {
 		if( gamePieces[playerID] != null ) {
 			//run movement coroutine
-			Debug.Log($"Player {playerID} is moving {spaces} spaces");
+			// Debug.Log($"Player {playerID} is moving {spaces} spaces");
 			spaces = Math.Min(spaces, (this.spaces.Count - 1) - playerPositions[playerID]);
 			StartCoroutine(GoMovePlayer(playerID, spaces));
 		}
 		else {
-			Debug.Log($"Player {playerID} is not initialized");
+			// Debug.Log($"Player {playerID} is not initialized");
 		}
 	}
 
@@ -194,7 +194,7 @@ public class Board : MonoBehaviour {
 	}
 
 	private IEnumerator FinishMoving(int playerID, int boardIndex) {
-		Debug.Log($"Player {playerID} landed on space {boardIndex}!");
+		// Debug.Log($"Player {playerID} landed on space {boardIndex}!");
 		// if space ended moving on is a shoot or ladder
 		int ladderIndex = FindLadderAt(boardIndex);
 		int snakeIndex = FindSnakeAt(boardIndex);
@@ -207,7 +207,7 @@ public class Board : MonoBehaviour {
 
 		if( ladderIndex >= 0 ) {
 			var ladder = ladders[ladderIndex];
-			Debug.Log($"Player {playerID} is taking a ladder from {ladder.TransportationSettings.StartIndex} to {ladder.TransportationSettings.EndIndex}!");
+			// Debug.Log($"Player {playerID} is taking a ladder from {ladder.TransportationSettings.StartIndex} to {ladder.TransportationSettings.EndIndex}!");
 			audioPlayer.PlayLadder();
 			yield return playerController.MoveAlong(ladder.Path, ladder.TransportationSettings.DurationInSeconds, (int)moveSteps);
 			playerPositions[playerID] = ladder.TransportationSettings.EndIndex;
@@ -215,7 +215,7 @@ public class Board : MonoBehaviour {
 		}
 		else if( snakeIndex >= 0 ) {
 			var snake = snakes[snakeIndex];
-			Debug.Log($"Player {playerID} is taking a snake from {snake.TransportationSettings.StartIndex} to {snake.TransportationSettings.EndIndex}!");
+			// Debug.Log($"Player {playerID} is taking a snake from {snake.TransportationSettings.StartIndex} to {snake.TransportationSettings.EndIndex}!");
 			audioPlayer.PlaySnake();
 			yield return playerController.MoveAlong(snake.Path, snake.TransportationSettings.DurationInSeconds, (int)moveSteps);
 			playerPositions[playerID] = snake.TransportationSettings.EndIndex;
@@ -226,7 +226,7 @@ public class Board : MonoBehaviour {
 		globals.SetCurrentTurnData(player, new(globals.LastRoll, playerPositions[playerID]));
 
 		var turnData = GameState.Instance.Globals.GetCurrentTurnData((Player)playerID);
-		Debug.Log($"player {playerID} roll {turnData.Roll} dst {turnData.Destination}");
+		// Debug.Log($"player {playerID} roll {turnData.Roll} dst {turnData.Destination}");
 
 		if( questBoard.Win[playerID].Evaluate(globals) ) {
 			dlg.SetDialogueFromKey(player, nameof(QuestBoard.Win));
