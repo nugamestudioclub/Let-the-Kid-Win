@@ -56,12 +56,8 @@ public class Board : MonoBehaviour {
 
 	void Start() {
 		var globals = GameState.Instance.Globals;
-		for( int i = 0; i < playerPositions.Count; ++i ) {
-			var player = (Player)i;
-			globals.SetCurrentTurnData(player, new(roll: 0, startIndex));
-			var currentTurn = globals.GetCurrentTurnData(player);
-			// Debug.Log($"roll {currentTurn.Roll}, dst {currentTurn.Destination}");
-		}
+		for( int i = 0; i < playerPositions.Count; ++i )
+			globals.SetCurrentTurnData((Player)i, new(roll: 0, startIndex));
 		for( int i = 0; i < snakes.Count; ++i )
 			ConnectSnake(i);
 		for( int i = 0; i < ladders.Count; ++i )
@@ -76,7 +72,7 @@ public class Board : MonoBehaviour {
 	private void DebugUpdate() {
 		int playerID = (int)Player.Grandpa;
 		var player = gamePieces[playerID];
-		if( player.IsMoving )
+		if( GameState.Instance.CurrentState != GameState.State.PlayerTurn || player.IsMoving )
 			return;
 		for( int i = 1; i <= 6; ++i )
 			if( Input.GetKeyDown(KeyCode.Alpha0 + i) ) {

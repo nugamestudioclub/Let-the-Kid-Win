@@ -11,7 +11,7 @@ public class GameState : MonoBehaviour {
 
 	[SerializeField]
 	private State currentState;
-	public State CurrentState { get => currentState; }
+	public State CurrentState => currentState;
 
 	private bool isfirstTime = true;
 
@@ -55,8 +55,7 @@ public class GameState : MonoBehaviour {
 	void Update() {
 		if( isfirstTime ) {
 			isfirstTime = false;
-			DialogueHandler.Instance.SetDialogueFromKey(
-				$"c_Default");
+			DialogueHandler.Instance.SetDialogueFromKey("c_Default");
 			NextState();
 		}
 	}

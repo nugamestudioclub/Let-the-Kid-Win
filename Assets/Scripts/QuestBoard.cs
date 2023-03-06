@@ -52,7 +52,7 @@ public class QuestBoard {
 			roll1AndLandOnSnake.Add(new(GameQuests.RollAndLandOn(player, roll: 1, SpaceType.Snake), maxTimesCompleted: int.MaxValue));
 			meetAnotherPlayer.Add(new(GameQuests.MeetAnotherPlayer(player), maxTimesCompleted: int.MaxValue));
 			rollHigh3Times.Add(new(GameQuests.RollInRange(player, min: 5, max: 6, count: 3), maxTimesCompleted: int.MaxValue));
-			getAhead.Add(new(GameQuests.GetAhead(Player.Child, count: boardSize / 2), int.MaxValue));
+			getAhead.Add(new(GameQuests.GetAhead(player, count: boardSize / 2), int.MaxValue));
 			landOnLongestSnake.Add(new(GameQuests.LandOnSpace(player, longestSnakeIndex), int.MaxValue));
 			win.Add(new(GameQuests.Destination(player, index: boardSize - 1)));
 		}

@@ -85,7 +85,7 @@ public static class DialogueLines {
 				expression: Expression.Laugh  )
 			},
 			{ $"g_{nameof(QuestBoard.LandOnSameSnake3Times)}", new (
-				text: "Oops, I guess this snake has it out for me.",
+				text: "Oops, this snake has it out for me.",
 				player: Player.Grandpa,
 				expression: Expression.Laugh  )
 			},

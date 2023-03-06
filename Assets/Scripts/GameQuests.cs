@@ -35,10 +35,9 @@ public static class GameQuests {
 
 	public static Quest RollInRange(Player player, int min, int max, int count) {
 		return new(globals => {
-			var turnData = globals.GetAllTurnData(player).ToList();
-			return Enumerable.Range(1, count).All(x => {
+			return Enumerable.Range(0, count).All(x => {
 				int roll = globals.GetPreviousTurnData(player, x).Roll;
-				return min <= roll && max <= roll;
+				return min <= roll && roll <= max;
 			});
 		});
 	}
@@ -74,7 +73,7 @@ public static class GameQuests {
 			else
 				return Enumerable.Range(0, globals.PlayerCount).Any(x =>
 					x != playerId
-					&& globals.GetCurrentTurnData((Player)x).Destination == dst
+					&& globals.GetCurrentSpace((Player)x) == dst
 				);
 		});
 	}
@@ -83,16 +82,13 @@ public static class GameQuests {
 		return new(globals => {
 			int playerId = (int)player;
 			var currentSpaces = Enumerable.Range(0, globals.PlayerCount).Select(x => globals.GetCurrentSpace((Player)x)).ToList();
-			for( int i = 0; i < currentSpaces.Count; ++i )
-				if( currentSpaces[playerId] - count >= currentSpaces[i] )
-					return true;
-			return false;
+			return currentSpaces.Any(x => x + count < currentSpaces[playerId]);
 		});
 	}
 
 	private static IReadOnlyList<int> GetVisits(GameGlobals globals, Player player, SpaceType spaceType) {
 		var visits = Enumerable.Repeat(0, globals.SpaceCount).ToList();
-		int currentSpace = 0;
+		int currentSpace = globals.GetTurnData(0, player).Destination;
 		foreach( var turnData in globals.GetAllTurnData(player) ) {
 			int spaceLandedOn = currentSpace + turnData.Roll;
 			if( globals.GetTypeOfSpace(spaceLandedOn) == spaceType )
